@@ -41,9 +41,8 @@ public class ZenStore {
 
 
 
-    public String[] listFieldsOfEntity() {
-        String entityType = "(unknown)";
-        log.debug("Listing fields for entity type {}", entityType);
+    public String[] listFieldsOfEntity(String entityName) {
+        log.debug("Listing fields for entity {}", entityName);
         return new String[]{"_id", "status"};
     }
 }

@@ -63,7 +63,7 @@ public class ZenSoleCli {
         String entityName = promptMenuAndReturnSelectedValue("Please select the type of information to search:", new String[]{EXIT, SEARCH_TICKETS});
         if (checkForExit(entityName)) return null;
 
-        String[] searchFields = searchController.listFieldsOfEntity();
+        String[] searchFields = searchController.listFieldsOfEntity(entityName);
         String fieldName = promptMenuAndReturnSelectedValue("Please select the detail to search for:", searchFields);
         if (checkForExit(entityName)) return null;
 

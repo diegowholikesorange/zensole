@@ -20,8 +20,15 @@ public class ZenStore_Test {
 
 
     @Test
-    public void listFieldsByEntityShouldNotBeEmpty() {
-        assertThat(zenStore.listFieldsOfEntity()).isNotEmpty();
+    public void listFieldsOfEntityShouldNotBeEmpty() {
+        assertThat(zenStore.listFieldsOfEntity(null)).isNotEmpty();
+    }
+
+
+
+    @Test
+    public void listFieldsOfEntityForTicketsShouldContainId() {
+        assertThat(zenStore.listFieldsOfEntity("tickets")).contains("_id");
     }
 
 
@@ -33,4 +40,6 @@ public class ZenStore_Test {
         assertThat(results.get("_id").getAsString()).isEqualTo("7382ad0e-dea7-4c8d-b38f-cbbf016f2598");
         assertThat(results.get("organization_id").getAsInt()).isEqualTo(118);
     }
+
+
 }

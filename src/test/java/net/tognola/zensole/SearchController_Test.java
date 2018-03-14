@@ -4,6 +4,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import static org.mockito.ArgumentMatchers.any;
+
 public class SearchController_Test {
 
     private SearchController searchController;
@@ -23,8 +25,8 @@ public class SearchController_Test {
 
     @Test
     public void listFieldsOfEntityShouldDelegateToZenStore() {
-        searchController.listFieldsOfEntity();
-        Mockito.verify(zenStoreMock).listFieldsOfEntity();
+        searchController.listFieldsOfEntity(null);
+        Mockito.verify(zenStoreMock).listFieldsOfEntity(any());
     }
 
 

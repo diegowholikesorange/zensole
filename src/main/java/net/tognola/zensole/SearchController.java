@@ -20,7 +20,7 @@ public class SearchController {
 
 
 
-    public String[] listFieldsOfEntity() {
-        return zenStore.listFieldsOfEntity();
+    public String[] listFieldsOfEntity(String entityName) {
+        return zenStore.listFieldsOfEntity(entityName);
     }
 }
