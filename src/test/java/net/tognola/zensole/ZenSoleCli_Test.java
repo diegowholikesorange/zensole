@@ -8,9 +8,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class ZenSoleCli_Test {
 
+    @Test(timeout = 500)
+    public void loopShouldExitWhenUserRequestsExit() {
+        InputStream fakeConsole = new ByteArrayInputStream("1\n 1\n asdf\n 0 \n".getBytes());
+        ZenSoleCli cli = new ZenSoleCli(fakeConsole);
+        cli.loop();
+    }
+
+
+
     @Test
     public void fieldValuePromptShouldTrimResult() {
-        InputStream fakeConsole = new ByteArrayInputStream(" hello \n".getBytes()); // entering menu item  5, -1, 0
+        InputStream fakeConsole = new ByteArrayInputStream(" hello \n".getBytes());
         ZenSoleCli cli = new ZenSoleCli(fakeConsole);
         String fieldValue = cli.promptForAndReturnFieldValue("");
         assertThat(fieldValue).isEqualTo("hello");
@@ -19,9 +28,8 @@ public class ZenSoleCli_Test {
 
 
     @Test
-
     public void menuPromptShouldRepeatOnInvalidEntry() {
-        InputStream fakeConsole = new ByteArrayInputStream("5\n-1\n0\n".getBytes()); // entering menu item  5, -1, 0
+        InputStream fakeConsole = new ByteArrayInputStream("5\n -1\n a\n 0\n".getBytes());
         ZenSoleCli cli = new ZenSoleCli(fakeConsole);
         String[] menu = new String[]{"A"};
         String selected = cli.promptMenuAndReturnSelectedValue("", menu);
@@ -42,8 +50,8 @@ public class ZenSoleCli_Test {
 
 
     @Test
-    public void welcomeShouldContainProductName() {
+    public void welcomeMessageShouldContainProductName() {
         ZenSoleCli main = new ZenSoleCli(System.in);
-        assertThat(main.welcome()).contains("ZenSole");
+        assertThat(main.WELCOME).contains("ZenSole");
     }
 }

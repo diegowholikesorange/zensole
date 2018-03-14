@@ -1,11 +1,18 @@
 package net.tognola.zensole;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.InputStream;
 import java.util.Scanner;
 
+@java.lang.SuppressWarnings({"squid:S2629", "squid:S106"})
 public class ZenSoleCli {
+
+    private final Logger log = LoggerFactory.getLogger(ZenSoleCli.class.getCanonicalName());
+
+    static final String WELCOME = "Welcome to ZenSole - The ZenDesk Search Console Tool";
 
     private static final String EXIT = "EXIT";
     private static final String SEARCH_TICKETS = "tickets";
@@ -22,7 +29,7 @@ public class ZenSoleCli {
 
 
 
-    public ZenSoleCli() {
+    ZenSoleCli() {
         this(System.in);
     }
 
@@ -37,27 +44,32 @@ public class ZenSoleCli {
 
 
     void loop() {
-        print(welcome());
+        log.debug("Starting processing loop");
+
+        print(WELCOME);
 
         String searchResult;
         while ((searchResult = collectSearchCriteriaAndRunSearch()) != null) {
-            print("\n" + searchResult);
+            print("\nSearch Results:\n" + searchResult);
         }
+
+        log.debug("Ended processing loop");
     }
 
 
 
     String collectSearchCriteriaAndRunSearch() {
+
         String entityName = promptMenuAndReturnSelectedValue("Please select the type of information to search:", new String[]{EXIT, SEARCH_TICKETS});
-        checkForExit(entityName);
+        if (checkForExit(entityName)) return null;
 
         String[] searchFields = searchController.listFieldsOfEntity();
         String fieldName = promptMenuAndReturnSelectedValue("Please select the detail to search for:", searchFields);
-        checkForExit(fieldName);
+        if (checkForExit(entityName)) return null;
 
         String fieldValue = promptForAndReturnFieldValue("Please enter the value for '" + fieldName + "' to be searched for");
 
-        print(String.format("Searching for %s.%s=%s", entityName, fieldName, fieldValue));
+        log.debug(String.format("Searching for %s.%s=%s", entityName, fieldName, fieldValue));
         return runSearch();
     }
 
@@ -95,23 +107,18 @@ public class ZenSoleCli {
 
 
 
-    private void checkForExit(String menuSelection) {
+    private boolean checkForExit(String menuSelection) {
         if (EXIT.equalsIgnoreCase(menuSelection)) {
-            print("Exiting now.");
-            System.exit(0);
+            print("Exit requested");
+            return true;
         }
+        return false;
     }
 
 
 
     private void print(String s) {
         System.out.println(s);
-    }
-
-
-
-    String welcome() {
-        return "Welcome to ZenSole - The ZenDesk Search Console Tool";
     }
 
 

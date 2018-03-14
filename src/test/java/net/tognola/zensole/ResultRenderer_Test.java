@@ -25,7 +25,7 @@ public class ResultRenderer_Test {
                 "    \"created_at\": \"2016-03-31T03:16:52 -11:00\",\n" +
                 "    \"type\": \"task\",\n" +
                 "    \"subject\": \"A Problem in American Samoa\",\n" +
-                "    \"description\": \"Excepteur dolor in commodo minim irure laboris. In incididunt mollit veniam pariatur ullamco laborum ullamco aliqua do fugiat Lorem.\",\n" +
+                "    \"description\": \"Excepteur dolor in commodo minim irure laboris.\",\n" +
                 "    \"priority\": \"high\",\n" +
                 "    \"status\": \"closed\",\n" +
                 "    \"submitter_id\": 35,\n" +
@@ -49,7 +49,7 @@ public class ResultRenderer_Test {
 
 
     @Test
-    public void shouldRenderEachAttributeInSeparateLine() {
+    public void shouldRenderEachAttributeOnSeparateLine() {
         String rendered = renderer.render(testDataObject);
         System.out.println(rendered);
         String[] lines = rendered.split("\n");
@@ -63,8 +63,9 @@ public class ResultRenderer_Test {
         String rendered = renderer.render(testDataObject);
         assertThat(rendered).isNotEmpty();
         for (String key : testDataObject.keySet()) {
+            String valueWithoutQuotes = testDataObject.get(key).toString().replace("\"", "");
             assertThat(rendered).contains(key);
-            assertThat(rendered).contains(testDataObject.get(key).toString().replace("\"", ""));
+            assertThat(rendered).contains(valueWithoutQuotes);
         }
         testDataObject.keySet();
     }

@@ -20,6 +20,13 @@ public class ZenStore_Test {
 
 
     @Test
+    public void listFieldsByEntityShouldNotBeEmpty() {
+        assertThat(zenStore.listFieldsOfEntity()).isNotEmpty();
+    }
+
+
+
+    @Test
     public void searchByTicket_shouldReturnCorrectTicket_whenTicketExists() {
         JsonObject results = zenStore.search();
         assertThat(results.has("_id")).isTrue();
