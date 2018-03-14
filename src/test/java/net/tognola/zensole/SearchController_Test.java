@@ -25,7 +25,7 @@ public class SearchController_Test {
 
 
     @Test
-    public void listFieldsOfEntityShouldDelegateToZenStore() {
+    public void listFieldsOfEntityShouldDelegateToZenStore() throws IOException {
         searchController.listFieldsOfEntity(null);
         Mockito.verify(zenStoreMock).listFieldsOfEntity(any());
     }
@@ -34,8 +34,8 @@ public class SearchController_Test {
 
     @Test
     public void searchShouldDelegateToZenStore() throws IOException {
-        searchController.search("a", "b");
-        Mockito.verify(zenStoreMock).search("a", "b");
+        searchController.search("a", null, "b");
+        Mockito.verify(zenStoreMock).search("a", null, "b");
     }
 
 

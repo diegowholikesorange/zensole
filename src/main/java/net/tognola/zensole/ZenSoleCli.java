@@ -121,7 +121,7 @@ public class ZenSoleCli {
 
     String runSearch(String entityName, String fieldName, String fieldValue) throws IOException {
         print(String.format("Searching for %s with %s=%s...", entityName, fieldName, fieldValue));
-        return resultRenderer.render(searchController.search(entityName, fieldValue));
+        return resultRenderer.render(searchController.search(entityName, fieldName, fieldValue));
     }
 
 

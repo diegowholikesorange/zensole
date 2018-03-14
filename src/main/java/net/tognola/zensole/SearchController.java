@@ -16,13 +16,13 @@ public class SearchController {
 
 
 
-    public JsonObject search(String entityName, String fieldValue) throws IOException {
-        return zenStore.search(entityName, fieldValue);
+    public JsonObject search(String entityName, String fieldName, String fieldValue) throws IOException {
+        return zenStore.search(entityName, fieldName, fieldValue);
     }
 
 
 
-    public String[] listFieldsOfEntity(String entityName) {
+    public String[] listFieldsOfEntity(String entityName) throws IOException {
         return zenStore.listFieldsOfEntity(entityName);
     }
 }

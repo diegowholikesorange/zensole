@@ -48,12 +48,12 @@ schema changes.
 I implemented the solution in an iterative way, 
 based on the following sequence of features:
 
-0. End-end implementation for search of ticket by id (without the name of submitter, assignee and organisation included in the results)
-0. Search by any field of ticket 
-0. Search by any field of user (without the name of the user's organisation included in the result) 
-0. Search by any field of organisation
-0. Search by any field of user, with name of organisation included in the result
-0. Search by any field of ticket, with name of submitter, assignee and organisation included.  
+1. End-end implementation for search of ticket by id (without the name of submitter, assignee and organisation included in the results)
+1. Search by any field of ticket 
+1. Search by any field of user (without the name of the user's organisation included in the result) 
+1. Search by any field of organisation
+1. Search by any field of user, with name of organisation included in the result
+1. Search by any field of ticket, with name of submitter, assignee and organisation included.  
 
 I started with the ticket because I assumed that there would be the highest value
 in finding tickets, more than finding organisations or users.
