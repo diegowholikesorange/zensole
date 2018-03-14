@@ -31,7 +31,7 @@ public class ZenStore {
             reader.beginArray();
             while (reader.hasNext()) {
                 JsonObject nextEntity = gson.fromJson(reader, JsonObject.class);
-                if (fieldValue.equalsIgnoreCase(nextEntity.get(fieldName).getAsString())) {
+                if (nextEntity.get(fieldName) != null && fieldValue.equalsIgnoreCase(nextEntity.get(fieldName).getAsString())) {
                     result.add(nextEntity);
                 }
             }

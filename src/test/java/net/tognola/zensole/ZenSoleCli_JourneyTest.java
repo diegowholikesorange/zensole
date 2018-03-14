@@ -3,9 +3,7 @@ package net.tognola.zensole;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 
 public class ZenSoleCli_JourneyTest {
 
@@ -14,10 +12,26 @@ public class ZenSoleCli_JourneyTest {
 
 
     @Test
-    public void showAllTicketDetailsWhenTicketExists() throws IOException {
-        InputStream simulatedConsoleInput = new ByteArrayInputStream("1\n 0\n 6aac0369-a7e5-4417-8b50-92528ef485d3\n 0\n".getBytes());
-        cli = new ZenSoleCli(simulatedConsoleInput);
+    public void findAllTicketsForOrganization() throws IOException {
+        cli = new ZenSoleCli("1", "11", "121", "0");
+        String searchResults = cli.collectSearchCriteriaAndReturnSearchResult();
+        Assertions.assertThat(searchResults).contains("6f2eca87-8425-40f5-b12c-6745039d12f6");
+        Assertions.assertThat(searchResults).contains("ca106ab2-84af-45e7-a101-2d5c63eebf85");
+        Assertions.assertThat(searchResults).contains("9686f505-6bf0-4972-9ba3-9b5c2fe8f725");
+        Assertions.assertThat(searchResults).contains("A Drama in United Arab Emirates");
+        Assertions.assertThat(searchResults).contains("tickets/c527e065-ec62-40ed-aa72-136f5ab0eb89.json");
+        Assertions.assertThat(searchResults).contains("Consequat sit sint velit anim laboris adipisicing");
+        Assertions.assertThat(searchResults).contains("West Virginia");
+        Assertions.assertThat(searchResults).contains("Fédératéd Statés Of Micronésia");
+        Assertions.assertThat(searchResults).contains("A Drama in United Arab Emirates");
+        cli.collectSearchCriteriaAndReturnSearchResult();
+    }
 
+
+
+    @Test
+    public void showAllTicketDetailsWhenTicketExists() throws IOException {
+        cli = new ZenSoleCli("1", "0", "6aac0369-a7e5-4417-8b50-92528ef485d3", "0");
         String searchResults = cli.collectSearchCriteriaAndReturnSearchResult();
 
         Assertions.assertThat(searchResults).contains("6aac0369-a7e5-4417-8b50-92528ef485d3");
@@ -43,8 +57,7 @@ public class ZenSoleCli_JourneyTest {
 
     @Test
     public void showNoticeWhenNoTicketExists() throws IOException {
-        InputStream simulatedConsoleInput = new ByteArrayInputStream("1\n 0\n 555-555\n 0\n".getBytes());
-        cli = new ZenSoleCli(simulatedConsoleInput);
+        cli = new ZenSoleCli("1", "0", "555-555", "0");
 
         String searchResults = cli.collectSearchCriteriaAndReturnSearchResult();
         Assertions.assertThat(searchResults).contains("No matches found");

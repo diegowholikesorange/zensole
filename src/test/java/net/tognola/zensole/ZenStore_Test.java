@@ -100,18 +100,39 @@ public class ZenStore_Test {
 
     @Test
     public void searchByTicketId_shouldReturnCorrectTicket_whenTicketExists() throws IOException {
-        JsonObject results = zenStore.search("tickets", "_id", "6aac0369-a7e5-4417-8b50-92528ef485d3").get(0);
-        assertThat(results.has("_id")).isTrue();
-        assertThat(results.get("_id").getAsString()).isEqualTo("6aac0369-a7e5-4417-8b50-92528ef485d3");
-        assertThat(results.get("organization_id").getAsInt()).isEqualTo(113);
+        JsonObject result = zenStore.search("tickets", "_id", "6aac0369-a7e5-4417-8b50-92528ef485d3").get(0);
+        assertThat(result.has("_id")).isTrue();
+        assertThat(result.get("_id").getAsString()).isEqualTo("6aac0369-a7e5-4417-8b50-92528ef485d3");
+        assertThat(result.get("organization_id").getAsInt()).isEqualTo(113);
     }
 
 
 
     @Test
     public void searchByTicketId_shouldReturnEmpty_whenTicketDoesNotExist() throws IOException {
-        List<JsonObject> results = zenStore.search("tickets", "_id", "555-555");
-        assertThat(results).isEmpty();
+        List<JsonObject> result = zenStore.search("tickets", "_id", "555-555");
+        assertThat(result).isEmpty();
+    }
+
+
+
+    @Test
+    public void searchForOptionalFieldShouldSucceed() throws IOException {
+        List<JsonObject> result = zenStore.search("tickets", "organization_id", "112");
+        assertThat(result).hasSize(5);
+    }
+
+
+
+    @Test
+    public void searchByOrganizationId_shouldReturnCorrectTickets() throws IOException {
+        List<JsonObject> result = zenStore.search("tickets", "organization_id", "112");
+        String renderedContent = new ResultRenderer().render(result);
+        assertThat(renderedContent).contains("1a227508-9f39-427c-8f57-1b72f3fab87c");
+        assertThat(renderedContent).contains("5507c3f7-27fe-48f1-b01e-46d31715cc62");
+        assertThat(renderedContent).contains("cb3b726e-9ba0-4e35-b4d6-ee41c29a7185");
+        assertThat(renderedContent).contains("4d22436c-6c26-431b-9083-35ec8e86c57d");
+        assertThat(renderedContent).contains("0533df4e-488f-45dd-b4b8-e238be0690ed");
     }
 
 

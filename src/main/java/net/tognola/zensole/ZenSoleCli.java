@@ -4,6 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Scanner;
@@ -36,8 +37,14 @@ public class ZenSoleCli {
 
 
 
-    ZenSoleCli(InputStream inputStream) {
-        scanner = new Scanner(inputStream);
+    ZenSoleCli(String... userCommands) {
+        this(new ByteArrayInputStream(String.join("\n", userCommands).getBytes()));
+    }
+
+
+
+    private ZenSoleCli(InputStream simulatedConsoleInput) {
+        scanner = new Scanner(simulatedConsoleInput);
         searchController = new SearchController(new ZenStore());
         resultRenderer = new ResultRenderer();
     }
@@ -65,7 +72,7 @@ public class ZenSoleCli {
 
         String searchResult = runSearch(entityName, fieldName, fieldValue);
 
-        print("\nSearch Results:\n" + searchResult);
+        print(String.format("\nSearch results for %s with %s=%s: %s", entityName, fieldName, fieldValue, searchResult));
         return searchResult;
     }
 

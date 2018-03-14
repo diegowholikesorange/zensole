@@ -20,7 +20,10 @@ public class ResultRenderer {
             return "No matches found.";
         }
 
-        StringBuilder rendered = new StringBuilder(DELIMITER);
+        StringBuilder rendered = new StringBuilder();
+        rendered.append(String.format(result.size() > 1 ? "total %s matches" : "total %s match", result.size()));
+        rendered.append(DELIMITER);
+
         for (JsonObject jsonObject : result) {
 
             List<String> lines = new ArrayList<>();
