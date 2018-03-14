@@ -12,6 +12,23 @@ public class ZenSoleCli_JourneyTest {
 
 
     @Test
+    public void findAllUsersForOrganization() throws IOException {
+        cli = new ZenSoleCli("2", "15", "119", "0");
+        String searchResults = cli.collectSearchCriteriaAndReturnSearchResult();
+        Assertions.assertThat(searchResults).contains("Francisca Rasmussen");
+        Assertions.assertThat(searchResults).contains("Don't Worry Be Happy!");
+        Assertions.assertThat(searchResults).contains("Pitts Park");
+        Assertions.assertThat(searchResults).contains("9974-742-963");
+        Assertions.assertThat(searchResults).contains("Moran Daniels");
+        Assertions.assertThat(searchResults).contains("Tokelau");
+        Assertions.assertThat(searchResults).contains("Catalina Simpson");
+        Assertions.assertThat(searchResults).contains("rosannasimpson@flotonic.com");
+        cli.collectSearchCriteriaAndReturnSearchResult();
+    }
+
+
+
+    @Test
     public void findAllTicketsForOrganization() throws IOException {
         cli = new ZenSoleCli("1", "11", "121", "0");
         String searchResults = cli.collectSearchCriteriaAndReturnSearchResult();

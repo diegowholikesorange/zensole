@@ -30,10 +30,17 @@ public class ZenStore {
         try (JsonReader reader = new JsonReader(openJsonReader(entityName))) {
             reader.beginArray();
             while (reader.hasNext()) {
-                JsonObject nextEntity = gson.fromJson(reader, JsonObject.class);
-                if (nextEntity.get(fieldName) != null && fieldValue.equalsIgnoreCase(nextEntity.get(fieldName).getAsString())) {
-                    result.add(nextEntity);
+
+                JsonObject ithEntity = gson.fromJson(reader, JsonObject.class);
+                if (ithEntity.get(fieldName) != null && ithEntity.get(fieldName).isJsonPrimitive() &&
+                        ithEntity.get(fieldName).getAsString().equals(fieldValue)) {
+                    result.add(ithEntity);
                 }
+                if (ithEntity.get(fieldName) != null && ithEntity.get(fieldName).isJsonArray() &&
+                        ithEntity.get(fieldName).toString().contains(fieldValue)) {
+                    result.add(ithEntity);
+                }
+
             }
             reader.endArray();
         }

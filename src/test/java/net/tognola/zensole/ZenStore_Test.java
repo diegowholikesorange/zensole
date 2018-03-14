@@ -71,6 +71,33 @@ public class ZenStore_Test {
     @Test
     public void listFieldsOfEntityShouldNotBeEmpty() throws IOException {
         assertThat(zenStore.listFieldsOfEntity("tickets")).isNotEmpty();
+        assertThat(zenStore.listFieldsOfEntity("users")).isNotEmpty();
+    }
+
+
+
+    @Test
+    public void listFieldsOfEntityForUsersShouldContainAllFields() throws IOException {
+        String[] fields = zenStore.listFieldsOfEntity("users");
+        assertThat(fields).contains("_id");
+        assertThat(fields).contains("url");
+        assertThat(fields).contains("external_id");
+        assertThat(fields).contains("name");
+        assertThat(fields).contains("alias");
+        assertThat(fields).contains("created_at");
+        assertThat(fields).contains("active");
+        assertThat(fields).contains("verified");
+        assertThat(fields).contains("shared");
+        assertThat(fields).contains("locale");
+        assertThat(fields).contains("timezone");
+        assertThat(fields).contains("last_login_at");
+        assertThat(fields).contains("email");
+        assertThat(fields).contains("phone");
+        assertThat(fields).contains("signature");
+        assertThat(fields).contains("organization_id");
+        assertThat(fields).contains("tags");
+        assertThat(fields).contains("suspended");
+        assertThat(fields).contains("role");
     }
 
 
@@ -125,7 +152,7 @@ public class ZenStore_Test {
 
 
     @Test
-    public void searchByOrganizationId_shouldReturnCorrectTickets() throws IOException {
+    public void searchTicketByOrganizationId_shouldReturnCorrectTickets() throws IOException {
         List<JsonObject> result = zenStore.search("tickets", "organization_id", "112");
         String renderedContent = new ResultRenderer().render(result);
         assertThat(renderedContent).contains("1a227508-9f39-427c-8f57-1b72f3fab87c");
@@ -135,5 +162,24 @@ public class ZenStore_Test {
         assertThat(renderedContent).contains("0533df4e-488f-45dd-b4b8-e238be0690ed");
     }
 
+
+
+    @Test
+    public void searchUserByEmail_shouldReturnCorrectUser() throws IOException {
+        List<JsonObject> result = zenStore.search("users", "email", "coffeyrasmussen@flotonic.com");
+        assertThat(result).hasSize(1);
+        String renderedContent = new ResultRenderer().render(result);
+        assertThat(renderedContent).contains("Francisca Rasmussen");
+    }
+
+
+
+    @Test
+    public void searchUserByTags_shouldReturnCorrectUser() throws IOException {
+        List<JsonObject> result = zenStore.search("users", "tags", "Bonanza");
+        assertThat(result).hasSize(1);
+        String renderedContent = new ResultRenderer().render(result);
+        assertThat(renderedContent).contains("38899b1e-89ca-43e7-b039-e3c88525f0d2");
+    }
 
 }

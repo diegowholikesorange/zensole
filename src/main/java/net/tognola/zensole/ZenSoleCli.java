@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Scanner;
 
-@java.lang.SuppressWarnings({"squid:S2629", "squid:S106"})
+@java.lang.SuppressWarnings({"squid:S2629", "squid:S106"}) // exclude SonarLint check for System.out because this is intended here
 public class ZenSoleCli {
 
     private final Logger log = LoggerFactory.getLogger(ZenSoleCli.class.getCanonicalName());
@@ -18,6 +18,7 @@ public class ZenSoleCli {
 
     private static final String EXIT = "EXIT";
     private static final String SEARCH_TICKETS = "tickets";
+    private static final String SEARCH_USERS = "users";
 
     private final SearchController searchController;
     private final ResultRenderer resultRenderer;
@@ -62,17 +63,22 @@ public class ZenSoleCli {
 
     String collectSearchCriteriaAndReturnSearchResult() throws IOException {
 
-        String entityName = promptMenuAndReturnSelectedValue("Please select the type of information to search:", new String[]{EXIT, SEARCH_TICKETS});
+        String entityName = promptMenuAndReturnSelectedValue(
+                "Please select the type of information to search:",
+                new String[]{EXIT, SEARCH_TICKETS, SEARCH_USERS});
         if (checkForExit(entityName)) return EXIT;
 
         String[] searchFields = searchController.listFieldsOfEntity(entityName);
-        String fieldName = promptMenuAndReturnSelectedValue("Please select the detail to search for:", searchFields);
+        String fieldName = promptMenuAndReturnSelectedValue(
+                "Please select the detail to search for:",
+                searchFields);
 
-        String fieldValue = promptForAndReturnFieldValue("Please enter the value for '" + fieldName + "' to be searched for");
+        String fieldValue = promptForAndReturnFieldValue(String.format(
+                "Please enter the value for '%s' to be searched for", fieldName));
 
         String searchResult = runSearch(entityName, fieldName, fieldValue);
 
-        print(String.format("\nSearch results for %s with %s=%s: %s", entityName, fieldName, fieldValue, searchResult));
+        print(String.format("%nSearch results for %s with %s=%s: %s", entityName, fieldName, fieldValue, searchResult));
         return searchResult;
     }
 
