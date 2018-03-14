@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.List;
 import static org.assertj.core.api.Assertions.*;
 
 public class ZenStore_Test {
@@ -99,7 +100,7 @@ public class ZenStore_Test {
 
     @Test
     public void searchByTicketId_shouldReturnCorrectTicket_whenTicketExists() throws IOException {
-        JsonObject results = zenStore.search("tickets", "_id", "6aac0369-a7e5-4417-8b50-92528ef485d3");
+        JsonObject results = zenStore.search("tickets", "_id", "6aac0369-a7e5-4417-8b50-92528ef485d3").get(0);
         assertThat(results.has("_id")).isTrue();
         assertThat(results.get("_id").getAsString()).isEqualTo("6aac0369-a7e5-4417-8b50-92528ef485d3");
         assertThat(results.get("organization_id").getAsInt()).isEqualTo(113);
@@ -108,9 +109,9 @@ public class ZenStore_Test {
 
 
     @Test
-    public void searchByTicketId_shouldReturnNull_whenTicketDoesNotExist() throws IOException {
-        JsonObject results = zenStore.search("tickets", "_id", "555-555");
-        assertThat(results).isNull();
+    public void searchByTicketId_shouldReturnEmpty_whenTicketDoesNotExist() throws IOException {
+        List<JsonObject> results = zenStore.search("tickets", "_id", "555-555");
+        assertThat(results).isEmpty();
     }
 
 

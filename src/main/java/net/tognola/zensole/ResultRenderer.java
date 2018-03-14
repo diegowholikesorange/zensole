@@ -10,22 +10,29 @@ public class ResultRenderer {
 
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_YELLOW = "\u001B[33m";
+    public static final String DELIMITER = String.format("%n%50s%n", "").replace(" ", "-");
 
 
 
-    public String render(JsonObject testDataObject) {
+    public String render(List<JsonObject> result) {
 
-        if (testDataObject == null) {
+        if (result == null || result.isEmpty()) {
             return "No matches found.";
         }
 
-        List<String> lines = new ArrayList<>();
-        for (String key : testDataObject.keySet()) {
-            String value = testDataObject.get(key).toString().replace("\"", "");
-            String line = String.format("%-20s = %s %s %s", key, ANSI_YELLOW, value, ANSI_RESET);
-            lines.add(line);
+        StringBuilder rendered = new StringBuilder(DELIMITER);
+        for (JsonObject jsonObject : result) {
+
+            List<String> lines = new ArrayList<>();
+            for (String key : jsonObject.keySet()) {
+                String value = jsonObject.get(key).toString().replace("\"", "");
+                String line = String.format("%-20s = %s %s %s", key, ANSI_YELLOW, value, ANSI_RESET);
+                lines.add(line);
+            }
+            Collections.sort(lines);
+            rendered.append(String.join("\n", lines));
+            rendered.append(DELIMITER);
         }
-        Collections.sort(lines);
-        return String.join("\n", lines);
+        return rendered.toString();
     }
 }

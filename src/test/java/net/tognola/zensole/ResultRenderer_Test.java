@@ -5,6 +5,8 @@ import com.google.gson.JsonParser;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ResultRenderer_Test {
@@ -12,13 +14,13 @@ public class ResultRenderer_Test {
     private ResultRenderer renderer;
 
 
-    private JsonObject testDataObject;
+    private List<JsonObject> fakeResult;
 
 
 
     @Before
     public void setup() {
-        String json = "{\n" +
+        final String json = "{\n" +
                 "    \"_id\": \"7382ad0e-dea7-4c8d-b38f-cbbf016f2598\",\n" +
                 "    \"url\": \"http://initech.zendesk.com/api/v2/tickets/7382ad0e-dea7-4c8d-b38f-cbbf016f2598.json\",\n" +
                 "    \"external_id\": \"6d3b0e05-6013-4513-9913-0bb6a0f66ef7\",\n" +
@@ -41,8 +43,8 @@ public class ResultRenderer_Test {
                 "    \"due_at\": \"2016-08-06T08:36:17 -10:00\",\n" +
                 "    \"via\": \"chat\"\n" +
                 "  }";
-        testDataObject = (new JsonParser()).parse(json).getAsJsonObject();
-
+        fakeResult = new ArrayList<>();
+        fakeResult.add(new JsonParser().parse(json).getAsJsonObject());
         renderer = new ResultRenderer();
     }
 
@@ -50,23 +52,32 @@ public class ResultRenderer_Test {
 
     @Test
     public void shouldRenderEachAttributeOnSeparateLine() {
-        String rendered = renderer.render(testDataObject);
+        final String rendered = renderer.render(fakeResult);
         System.out.println(rendered);
-        String[] lines = rendered.split("\n");
-        assertThat(lines.length).isEqualTo(16);
+        final String[] lines = rendered.split("\n");
+        assertThat(lines.length).isEqualTo(19);
     }
 
 
 
     @Test
-    public void shouldRenderAllData() {
-        String rendered = renderer.render(testDataObject);
+    public void shouldRenderAllKeysAndValues() {
+        final String rendered = renderer.render(fakeResult);
         assertThat(rendered).isNotEmpty();
-        for (String key : testDataObject.keySet()) {
-            String valueWithoutQuotes = testDataObject.get(key).toString().replace("\"", "");
+        for (final String key : fakeResult.get(0).keySet()) {
             assertThat(rendered).contains(key);
-            assertThat(rendered).contains(valueWithoutQuotes);
+            final String valueAsStringWithoutQuotes = fakeResult.get(0).get(key).toString().replace("\"", "");
+            assertThat(rendered).contains(valueAsStringWithoutQuotes);
         }
-        testDataObject.keySet();
+    }
+
+
+
+    @Test
+    public void shouldRenderEmptyResult() {
+        fakeResult = new ArrayList<>();
+        final String rendered = renderer.render(fakeResult);
+        assertThat(rendered).isNotEmpty();
+        assertThat(rendered).contains("No matches found");
     }
 }

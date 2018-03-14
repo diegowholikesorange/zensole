@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ZenStore {
 
@@ -17,29 +19,26 @@ public class ZenStore {
 
 
 
-    public JsonObject search(String entityName, String fieldName, String fieldValue) throws IOException {
+    public List<JsonObject> search(String entityName, String fieldName, String fieldValue) throws IOException {
 
         log.debug("Searching for {}.{}={}", entityName, fieldName, fieldValue);
         validateSearchInput(entityName, fieldName, fieldValue);
 
-        JsonObject result = null;
+        List<JsonObject> result = new ArrayList<>();
         Gson gson = new Gson();
 
         try (JsonReader reader = new JsonReader(openJsonReader(entityName))) {
             reader.beginArray();
             while (reader.hasNext()) {
                 JsonObject nextEntity = gson.fromJson(reader, JsonObject.class);
-                if (fieldValue.equalsIgnoreCase(nextEntity.get("_id").getAsString())) {
-                    result = nextEntity;
-                    break;
+                if (fieldValue.equalsIgnoreCase(nextEntity.get(fieldName).getAsString())) {
+                    result.add(nextEntity);
                 }
             }
-            if (result == null) {
-                reader.endArray();
-            }
+            reader.endArray();
         }
 
-        log.debug("Searched for {}.{}={}, result: {}", entityName, "_id", fieldValue, result == null ? "No match" : result);
+        log.debug("Searched for {}.{}={}, result: {}", entityName, "_id", fieldValue, result.isEmpty() ? "No match" : result);
         return result;
     }
 
