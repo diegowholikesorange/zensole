@@ -3,14 +3,15 @@ package net.tognola.zensole;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ZenSoleCli_Test {
 
-    @Test(timeout = 500)
-    public void loopShouldExitWhenUserRequestsExit() {
-        InputStream fakeConsole = new ByteArrayInputStream("1\n 1\n asdf\n 0 \n".getBytes());
+    @Test(timeout = 5000)
+    public void loopShouldExitWhenUserRequestsExit() throws IOException {
+        InputStream fakeConsole = new ByteArrayInputStream("1\n 0\n asdf\n 0 \n".getBytes());
         ZenSoleCli cli = new ZenSoleCli(fakeConsole);
         cli.loop();
     }

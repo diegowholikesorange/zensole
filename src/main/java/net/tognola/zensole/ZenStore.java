@@ -1,9 +1,14 @@
 package net.tognola.zensole;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.stream.JsonReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 public class ZenStore {
 
@@ -11,32 +16,52 @@ public class ZenStore {
 
 
 
-    public JsonObject search() {
-        log.debug("Searching {} for {}={}", "tickets", "_id", "123");
-        String json = "{\n" +
-                "    \"_id\": \"7382ad0e-dea7-4c8d-b38f-cbbf016f2598\",\n" +
-                "    \"url\": \"http://initech.zendesk.com/api/v2/tickets/7382ad0e-dea7-4c8d-b38f-cbbf016f2598.json\",\n" +
-                "    \"external_id\": \"6d3b0e05-6013-4513-9913-0bb6a0f66ef7\",\n" +
-                "    \"created_at\": \"2016-03-31T03:16:52 -11:00\",\n" +
-                "    \"type\": \"task\",\n" +
-                "    \"subject\": \"A Problem in American Samoa\",\n" +
-                "    \"description\": \"Excepteur dolor in commodo minim irure laboris. In incididunt mollit veniam pariatur ullamco laborum ullamco aliqua do fugiat Lorem.\",\n" +
-                "    \"priority\": \"high\",\n" +
-                "    \"status\": \"closed\",\n" +
-                "    \"submitter_id\": 35,\n" +
-                "    \"assignee_id\": 64,\n" +
-                "    \"organization_id\": 118,\n" +
-                "    \"tags\": [\n" +
-                "      \"Missouri\",\n" +
-                "      \"Alabama\",\n" +
-                "      \"Virginia\",\n" +
-                "      \"Virgin Islands\"\n" +
-                "    ],\n" +
-                "    \"has_incidents\": true,\n" +
-                "    \"due_at\": \"2016-08-06T08:36:17 -10:00\",\n" +
-                "    \"via\": \"chat\"\n" +
-                "  }";
-        return (new JsonParser()).parse(json).getAsJsonObject();
+    public JsonObject search(String entityName, String fieldValue) throws IOException {
+
+        log.debug("Searching for {}.{}={}", entityName, "_id", fieldValue);
+        validateSearchInput(entityName, fieldValue);
+
+        JsonObject result = null;
+        Gson gson = new Gson();
+
+        InputStream jsonData = openJsonDataStream(entityName);
+        JsonReader reader = new JsonReader(new InputStreamReader(jsonData, "UTF-8"));
+        reader.beginArray();
+        while (reader.hasNext()) {
+            JsonObject message = gson.fromJson(reader, JsonObject.class);
+            if (fieldValue.equalsIgnoreCase(message.get("_id").getAsString())) {
+                result = message;
+                break;
+            }
+        }
+        if (result == null) {
+            reader.endArray();
+        }
+        reader.close();
+
+        log.debug("Searched for {}.{}={}, result: {}", entityName, "_id", fieldValue, result == null ? "No match" : result);
+        return result;
+    }
+
+
+
+    private InputStream openJsonDataStream(String entityName) {
+        InputStream jsonData = getClass().getResourceAsStream("/" + entityName + ".json");
+        if (jsonData == null) {
+            throw new IllegalStateException("Could not load " + entityName + ".json from classpath");
+        }
+        return jsonData;
+    }
+
+
+
+    private void validateSearchInput(String entityName, String fieldValue) {
+        if (entityName == null) {
+            throw new IllegalArgumentException("Entity name must not be null");
+        }
+        if (fieldValue == null) {
+            throw new IllegalArgumentException("Field value must not be null");
+        }
     }
 
 

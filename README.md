@@ -68,15 +68,15 @@ then I want to see all details of the correct ticket (with id NNN).
 when I search for a ticket with id NNN 
 then I want to be notified that no matching ticket exists.
 
-### As an operations engineer I want a log file with timestamps that shows me the user input and progress of the search so that I can reproduce and analyse issues and monitor performance
+### As an operations engineer I want a log file with timestamps that shows me the user input and result of the search so that I can reproduce and analyse issues and monitor performance
 #### Acceptance Criteria
 * Given a search for a ticket by its id was successful 
-and I now the id of the ticket that was searched 
+and I know the id of the ticket that was searched 
 when I open the log file
 then I want the log file to contain an entry that states 
 the time of the search, the ticket id and the number of results returned.
 * Given a search for a ticket was unsuccessful
-and I now the id of the ticket that was searched 
+and I know the id of the ticket that was searched 
 when I open the log file
 then I want the log file to contain an entry that states 
 the time of the search, the ticket id and the reason why the search failed.

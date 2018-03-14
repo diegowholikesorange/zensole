@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import java.io.IOException;
 import static org.mockito.ArgumentMatchers.any;
 
 public class SearchController_Test {
@@ -32,9 +33,9 @@ public class SearchController_Test {
 
 
     @Test
-    public void searchShouldDelegateToZenStore() {
-        searchController.search();
-        Mockito.verify(zenStoreMock).search();
+    public void searchShouldDelegateToZenStore() throws IOException {
+        searchController.search("a", "b");
+        Mockito.verify(zenStoreMock).search("a", "b");
     }
 
 

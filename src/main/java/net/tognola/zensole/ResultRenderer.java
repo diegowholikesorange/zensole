@@ -14,6 +14,11 @@ public class ResultRenderer {
 
 
     public String render(JsonObject testDataObject) {
+
+        if (testDataObject == null) {
+            return "No matches found.";
+        }
+
         List<String> lines = new ArrayList<>();
         for (String key : testDataObject.keySet()) {
             String value = testDataObject.get(key).toString().replace("\"", "");

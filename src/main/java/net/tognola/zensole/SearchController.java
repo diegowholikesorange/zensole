@@ -2,6 +2,8 @@ package net.tognola.zensole;
 
 import com.google.gson.JsonObject;
 
+import java.io.IOException;
+
 public class SearchController {
 
     private final ZenStore zenStore;
@@ -14,8 +16,8 @@ public class SearchController {
 
 
 
-    public JsonObject search() {
-        return zenStore.search();
+    public JsonObject search(String entityName, String fieldValue) throws IOException {
+        return zenStore.search(entityName, fieldValue);
     }
 
 
