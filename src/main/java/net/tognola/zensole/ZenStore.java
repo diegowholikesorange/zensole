@@ -32,4 +32,10 @@ public class ZenStore {
                 "  }";
         return (new JsonParser()).parse(json).getAsJsonObject();
     }
+
+
+
+    public String[] listFieldsOfEntity() {
+        return new String[]{"_id", "status"};
+    }
 }

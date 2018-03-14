@@ -49,12 +49,22 @@ public class ResultRenderer_Test {
 
 
     @Test
-    public void renderedTextShouldContainAllData() {
+    public void shouldRenderEachAttributeInSeparateLine() {
+        String rendered = renderer.render(testDataObject);
+        System.out.println(rendered);
+        String[] lines = rendered.split("\n");
+        assertThat(lines.length).isEqualTo(16);
+    }
+
+
+
+    @Test
+    public void shouldRenderAllData() {
         String rendered = renderer.render(testDataObject);
         assertThat(rendered).isNotEmpty();
         for (String key : testDataObject.keySet()) {
             assertThat(rendered).contains(key);
-            assertThat(rendered).contains(testDataObject.get(key).toString());
+            assertThat(rendered).contains(testDataObject.get(key).toString().replace("\"", ""));
         }
         testDataObject.keySet();
     }

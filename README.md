@@ -47,11 +47,10 @@ schema changes.
 # Incremental Delivery of Value
 I implemented the solution in an iterative way, 
 based on the following sequence of features:
-0. End-end implementation for search of ticket by id 
-(without the name of submitter, assignee and organisation included in the results)
+
+0. End-end implementation for search of ticket by id (without the name of submitter, assignee and organisation included in the results)
 0. Search by any field of ticket 
-0. Search by any field of user
-(without the name of the user's organisation included in the result) 
+0. Search by any field of user (without the name of the user's organisation included in the result) 
 0. Search by any field of organisation
 0. Search by any field of user, with name of organisation included in the result
 0. Search by any field of ticket, with name of submitter, assignee and organisation included.  
