@@ -192,9 +192,64 @@ public class ZenStore_Test {
 
 
     @Test
-    public void searchForEmptyFieldsShouldSucceed() throws IOException {
+    public void searchForEmptyOrganizationShouldSucceed() throws IOException {
         List<JsonObject> result = zenStore.search("tickets", "organization_id", "");
         assertThat(result).hasSize(4);
     }
 
+
+
+    @Test
+    public void searchForEmptyTagsShouldSucceed() throws IOException {
+        List<JsonObject> result = zenStore.search("test-tickets", "tags", "");
+        assertThat(result).hasSize(2);
+    }
+
+
+
+    @Test
+    public void shouldConvertPrimitiveValueToString() throws IOException {
+        List<JsonObject> tickets = zenStore.search("test-tickets", "_id", "2217c7dc-7371-4401-8738-0a8a8aedc08d");
+        assertThat(zenStore.convertFieldValueToString(tickets.get(0).get("status"))).isEqualTo("closed");
+    }
+
+
+
+    @Test
+    public void shouldConvertEmptyPrimitiveValueToString() throws IOException {
+        List<JsonObject> tickets = zenStore.search("test-tickets", "_id", "436bf9b0-1147-4c0a-8439-6f79833bff5b");
+        assertThat(zenStore.convertFieldValueToString(tickets.get(0).get("status"))).isEqualTo("");
+    }
+
+
+
+    @Test
+    public void shouldConvertMissingPrimitiveValueToString() throws IOException {
+        List<JsonObject> tickets = zenStore.search("test-tickets", "_id", "1a227508-9f39-427c-8f57-1b72f3fab87c");
+        assertThat(zenStore.convertFieldValueToString(tickets.get(0).get("status"))).isEqualTo("");
+    }
+
+
+
+    @Test
+    public void shouldConvertArrayValueToString() throws IOException {
+        List<JsonObject> tickets = zenStore.search("test-tickets", "_id", "2217c7dc-7371-4401-8738-0a8a8aedc08d");
+        assertThat(zenStore.convertFieldValueToString(tickets.get(0).get("tags"))).isEqualTo("Massachusetts,New York,Minnesota,New Jersey");
+    }
+
+
+
+    @Test
+    public void shouldConvertEmptyArrayValueToString() throws IOException {
+        List<JsonObject> tickets = zenStore.search("test-tickets", "_id", "436bf9b0-1147-4c0a-8439-6f79833bff5b");
+        assertThat(zenStore.convertFieldValueToString(tickets.get(0).get("tags"))).isEqualTo("");
+    }
+
+
+
+    @Test
+    public void shouldConvertMissingArrayValueToString() throws IOException {
+        List<JsonObject> tickets = zenStore.search("test-tickets", "_id", "1a227508-9f39-427c-8f57-1b72f3fab87c");
+        assertThat(zenStore.convertFieldValueToString(tickets.get(0).get("tags"))).isEqualTo("");
+    }
 }

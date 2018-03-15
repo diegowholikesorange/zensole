@@ -53,20 +53,23 @@ class ZenStore {
 
 
 
-    private String convertFieldValueToString(JsonElement ithFieldValue) {
+    String convertFieldValueToString(JsonElement ithFieldValue) {
         String ithFieldValueAsString = "";
         if (ithFieldValue != null && ithFieldValue.isJsonPrimitive()) {
             ithFieldValueAsString = ithFieldValue.getAsString();
         }
         if (ithFieldValue != null && ithFieldValue.isJsonArray()) {
-            ithFieldValueAsString = ithFieldValue.toString();
+            ithFieldValueAsString = ithFieldValue.toString()
+                    .replace("[", "")
+                    .replace("]", "")
+                    .replace("\"", "");
         }
         return ithFieldValueAsString;
     }
 
 
 
-    private InputStreamReader openJsonReader(String entityName) throws UnsupportedEncodingException {
+    InputStreamReader openJsonReader(String entityName) throws UnsupportedEncodingException {
         InputStream jsonData = getClass().getResourceAsStream("/" + entityName + ".json");
         if (jsonData == null) {
             throw new IllegalStateException("Could not load " + entityName + ".json from classpath. Is this file bundled with the jar ?");
