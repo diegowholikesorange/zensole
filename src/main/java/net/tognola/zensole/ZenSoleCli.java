@@ -64,17 +64,19 @@ public class ZenSoleCli {
     String collectSearchCriteriaAndReturnSearchResult() throws IOException {
 
         String entityName = promptMenuAndReturnSelectedValue(
-                "Please select the type of information to search:",
+                "Please select the type of information to search (then press enter):",
                 new String[]{EXIT, SEARCH_TICKETS, SEARCH_USERS});
         if (checkForExit(entityName)) return EXIT;
 
         String[] searchFields = searchController.listFieldsOfEntity(entityName);
         String fieldName = promptMenuAndReturnSelectedValue(
-                "Please select the detail to search for:",
+                "Please select the detail to search for (then press enter):",
                 searchFields);
 
         String fieldValue = promptForAndReturnFieldValue(String.format(
-                "Please enter the value for '%s' to be searched for", fieldName));
+                "Please enter the value for '%s' to be searched for - " +
+                        "entering nothing here will search for items that have no information for %s (then press enter)",
+                fieldName, fieldName));
 
         String searchResult = runSearch(entityName, fieldName, fieldValue);
 

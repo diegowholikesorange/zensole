@@ -7,15 +7,23 @@ https://github.com/diegowholikesorange/zensole
 # CI Location
 https://circleci.com/gh/diegowholikesorange/zensole
 
+# Build and Run
+
+**Note:** this process will check the binary dependencies for known vulnerabilities 
+(using OWASP dependency check https://www.owasp.org/index.php/OWASP_Dependency_Check). 
+This will trigger a download of known CVEs that may take a few minutes on the first run. 
+The CVEs are cached for 4 hours, subsequent builds will therefore be faster.
+
 # Assumptions
 * IDs of companies, users and tickets in the provided JSON files are unique within their bounded context.
 * Schema changes are likely to occur in the future
 * A change of the data representation away from JSON strings to another form (XML strings, DTOs) is 
 not likely (but the design should still support this)  
+* It's ok to match by substring instead of full value too (e.g "mar" will return "mary")
 
 # Design Decisions
 Based on above assumptions, I decided on and followed the below principles:
-* Generic filtering by search field. The filtering of data by field should not 
+* **Generic filtering by search field.** The filtering of data by field should not 
 have long if statements checking the field name specified in the search query against
 a hardcoded list of each fields of the entities (DRY). We want to avoid expressions such as: 
 ```   
@@ -26,7 +34,7 @@ a hardcoded list of each fields of the entities (DRY). We want to avoid expressi
 ```    
 This should be avoided by using a generic solution, 
 e.g. maps with field names as keys or Java reflection.
-* Avoiding domain model. There is the option to abstract the 
+* **Avoiding domain model.** There is the option to abstract the 
 representation of data in JSON format away from the consumers (query and renderer). 
 This could easily be achieved by introducing a domain layer with objects for Organisation,
 User, Ticket implementing some "SearchResultItem" interface. 
@@ -37,9 +45,9 @@ e.g. for enrichment and rendering of results.
 Another disadvantage would be that the data schema is then known to the application,
 which from a search perspective is not necessary at this stage (YAGNI). 
 I feel that a domain layer would bloat the code while not adding much value. 
-The representation of objects as JSONObjects is sufficiently typed for our purpose (KISS)
-and provides a higher level of flexibility, e.g. backward compatibility in the case of
-schema changes. 
+The representation of objects as JSONObjects is sufficiently structured for our purpose (KISS)
+and provides a higher level of flexibility, e.g. automatic backward compatibility in the case of
+(most) schema changes. 
 
 
  
@@ -67,6 +75,17 @@ then I want to see all details of the correct ticket (with id NNN).
 * Given a ticket with id NNN does not exist, 
 when I search for a ticket with id NNN 
 then I want to be notified that no matching ticket exists.
+
+### As a user I want to be able to search a ticket by any value for any field so that I can see all details of the ticket.
+#### Acceptance Criteria
+* Given tickets exist with value X for field F, where X is not empty,
+when I search for tickets with value X for field F 
+then I want to see all tickets that have value X for field F and I want to see all the fields of each ticket.
+* Given tickets exist with empty or no value for field F,
+when I search for tickets with empty value for field F 
+then I want to see all tickets that have an empty or no value for field F 
+and I want to see all the fields of each ticket.
+*
 
 ### As an operations engineer I want a log file with timestamps that shows me the user input and result of the search so that I can reproduce and analyse issues and monitor performance
 #### Acceptance Criteria

@@ -1,6 +1,7 @@
 package net.tognola.zensole;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
 import org.slf4j.Logger;
@@ -19,25 +20,26 @@ public class ZenStore {
 
 
 
-    public List<JsonObject> search(String entityName, String fieldName, String fieldValue) throws IOException {
+    public List<JsonObject> search(String queryEntityName, String queryFieldName, String queryFieldValue) throws IOException {
 
-        log.debug("Searching for {}.{}={}", entityName, fieldName, fieldValue);
-        validateSearchInput(entityName, fieldName, fieldValue);
+        log.debug("Searching for {}.{}={}", queryEntityName, queryFieldName, queryFieldValue);
+        validateSearchInput(queryEntityName, queryFieldName, queryFieldValue);
 
         List<JsonObject> result = new ArrayList<>();
         Gson gson = new Gson();
 
-        try (JsonReader reader = new JsonReader(openJsonReader(entityName))) {
+        try (JsonReader reader = new JsonReader(openJsonReader(queryEntityName))) {
             reader.beginArray();
             while (reader.hasNext()) {
 
                 JsonObject ithEntity = gson.fromJson(reader, JsonObject.class);
-                if (ithEntity.get(fieldName) != null && ithEntity.get(fieldName).isJsonPrimitive() &&
-                        ithEntity.get(fieldName).getAsString().equals(fieldValue)) {
+                String ithFieldValueAsString = convertFieldValueToString(ithEntity.get(queryFieldName));
+
+                if (! queryFieldValue.isEmpty() && ithFieldValueAsString.contains(queryFieldValue)) {
                     result.add(ithEntity);
                 }
-                if (ithEntity.get(fieldName) != null && ithEntity.get(fieldName).isJsonArray() &&
-                        ithEntity.get(fieldName).toString().contains(fieldValue)) {
+
+                if (queryFieldValue.isEmpty() && ithFieldValueAsString.isEmpty()) {
                     result.add(ithEntity);
                 }
 
@@ -45,8 +47,21 @@ public class ZenStore {
             reader.endArray();
         }
 
-        log.debug("Searched for {}.{}={}, result: {}", entityName, "_id", fieldValue, result.isEmpty() ? "No match" : result);
+        log.debug("Searched for {}.{}={}, result: {}", queryEntityName, "_id", queryFieldValue, result.isEmpty() ? "No match" : result);
         return result;
+    }
+
+
+
+    private String convertFieldValueToString(JsonElement ithFieldValue) {
+        String ithFieldValueAsString = "";
+        if (ithFieldValue != null && ithFieldValue.isJsonPrimitive()) {
+            ithFieldValueAsString = ithFieldValue.getAsString();
+        }
+        if (ithFieldValue != null && ithFieldValue.isJsonArray()) {
+            ithFieldValueAsString = ithFieldValue.toString();
+        }
+        return ithFieldValueAsString;
     }
 
 
@@ -68,8 +83,8 @@ public class ZenStore {
         if (fieldName == null || fieldName.isEmpty()) {
             throw new IllegalArgumentException("Field name must not be null or empty");
         }
-        if (fieldValue == null || fieldValue.isEmpty()) {
-            throw new IllegalArgumentException("Field value must not be null or empty");
+        if (fieldValue == null) {
+            throw new IllegalArgumentException("Field value must not be null");
         }
     }
 

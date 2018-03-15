@@ -48,10 +48,7 @@ public class ZenStore_Test {
 
         assertThatThrownBy(() -> zenStore.search("tickets", "_id", null))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Field value must not be null or empty");
-        assertThatThrownBy(() -> zenStore.search("tickets", "_id", ""))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Field value must not be null or empty");
+                .hasMessage("Field value must not be null");
     }
 
 
@@ -180,6 +177,24 @@ public class ZenStore_Test {
         assertThat(result).hasSize(1);
         String renderedContent = new ResultRenderer().render(result);
         assertThat(renderedContent).contains("38899b1e-89ca-43e7-b039-e3c88525f0d2");
+    }
+
+
+
+    @Test
+    public void searchUserBySubstringOfName_shouldReturnCorrectUser() throws IOException {
+        List<JsonObject> result = zenStore.search("users", "name", "Watkins");
+        assertThat(result).hasSize(1);
+        String renderedContent = new ResultRenderer().render(result);
+        assertThat(renderedContent).contains("38899b1e-89ca-43e7-b039-e3c88525f0d2");
+    }
+
+
+
+    @Test
+    public void searchForEmptyFieldsShouldSucceed() throws IOException {
+        List<JsonObject> result = zenStore.search("tickets", "organization_id", "");
+        assertThat(result).hasSize(4);
     }
 
 }
