@@ -5,7 +5,7 @@ import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.util.List;
 
-public class SearchController {
+class SearchController {
 
     private final ZenStore zenStore;
 

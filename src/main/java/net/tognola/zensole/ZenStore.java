@@ -14,7 +14,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ZenStore {
+class ZenStore {
 
     private final Logger log = LoggerFactory.getLogger(ZenStore.class.getCanonicalName());
 
@@ -106,7 +106,7 @@ public class ZenStore {
             throw new IllegalStateException("No entity found in " + entityName + ".json - is this file empty ?");
         }
 
-        return firstEntity.keySet().stream().toArray(String[]::new);
+        return firstEntity.keySet().toArray(new String[0]);
     }
 
 

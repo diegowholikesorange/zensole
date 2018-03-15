@@ -46,7 +46,6 @@ public class ZenSoleCli_Test {
 
     @Test
     public void welcomeMessageShouldContainProductName() {
-        ZenSoleCli main = new ZenSoleCli();
-        assertThat(main.WELCOME).contains("ZenSole");
+        assertThat(ZenSoleCli.WELCOME).contains("ZenSole");
     }
 }

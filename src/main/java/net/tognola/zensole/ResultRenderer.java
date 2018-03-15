@@ -6,11 +6,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class ResultRenderer {
+class ResultRenderer {
 
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_YELLOW = "\u001B[33m";
-    public static final String DELIMITER = String.format("%n%50s%n", "").replace(" ", "-");
+    private static final String DELIMITER = String.format("%n%50s%n", "").replace(" ", "-");
 
 
 

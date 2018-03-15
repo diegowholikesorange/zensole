@@ -9,8 +9,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Scanner;
 
-@java.lang.SuppressWarnings({"squid:S2629", "squid:S106"}) // exclude SonarLint check for System.out because this is intended here
-public class ZenSoleCli {
+@java.lang.SuppressWarnings({"squid:S2629", "squid:S106"})
+        // exclude SonarLint check for System.out because this is intended here
+class ZenSoleCli {
 
     private final Logger log = LoggerFactory.getLogger(ZenSoleCli.class.getCanonicalName());
 
@@ -32,7 +33,7 @@ public class ZenSoleCli {
 
 
 
-    ZenSoleCli() {
+    private ZenSoleCli() {
         this(System.in);
     }
 
@@ -55,7 +56,7 @@ public class ZenSoleCli {
     void loop() throws IOException {
         log.debug("Starting processing loop");
         print(WELCOME);
-        while ((collectSearchCriteriaAndReturnSearchResult()) != EXIT)
+        while (! EXIT.equals(collectSearchCriteriaAndReturnSearchResult()))
             log.debug("Ended processing loop");
     }
 
@@ -134,7 +135,7 @@ public class ZenSoleCli {
 
 
 
-    String runSearch(String entityName, String fieldName, String fieldValue) throws IOException {
+    private String runSearch(String entityName, String fieldName, String fieldValue) throws IOException {
         print(String.format("Searching for %s with %s=%s...", entityName, fieldName, fieldValue));
         return resultRenderer.render(searchController.search(entityName, fieldName, fieldValue));
     }
