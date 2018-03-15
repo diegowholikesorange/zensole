@@ -85,7 +85,13 @@ then I want to see all tickets that have value X for field F and I want to see a
 when I search for tickets with empty value for field F 
 then I want to see all tickets that have an empty or no value for field F 
 and I want to see all the fields of each ticket.
-*
+
+### As a user I want to see the names of organisations and users with their IDs so that I know who the ID represents
+#### Acceptance Criteria
+* Given search criteria exist for tickets and users that return one or more matches 
+when I perform the corresponding searches and look at the results
+then I want to see ID and name for any user or organisation listed in the results.
+  
 
 ### As an operations engineer I want a log file with timestamps that shows me the user input and result of the search so that I can reproduce and analyse issues and monitor performance
 #### Acceptance Criteria
