@@ -94,7 +94,7 @@ Names correspond to class names in the source code.
 * **ZenSoleCLI** runs an infinite loop receiving and processing user input, 
 until the user request exit from the CLI;
 * **SearchController** is a thin facade to the search and enrichment process;
-* **ZenStore interacts with the JSON files (tickets.json, users.json, 
+* **ZenStore interacts** with the JSON files (tickets.json, users.json, 
 organizations.json) and performs the search using GSON streams processing
 * **ResultsEnricher** receives the search results from the search controller 
 and enriches them by replacing user_id and organization_id with the names of the related entities.
