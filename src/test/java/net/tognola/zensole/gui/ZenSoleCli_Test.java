@@ -18,7 +18,7 @@ public class ZenSoleCli_Test {
     @Test
     public void fieldValuePromptShouldTrimResult() {
         ZenSoleCli cli = new ZenSoleCli(" hello ");
-        String fieldValue = cli.promptForAndReturnFieldValue("");
+        String fieldValue = cli.promptForAndReturnTextValue("");
         assertThat(fieldValue).isEqualTo("hello");
     }
 

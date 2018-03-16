@@ -100,4 +100,22 @@ public class ZenSoleCli_JourneyTest {
 
         assertThat(searchResults).contains("No matches found");
     }
+
+
+
+    @Test
+    public void findOrganizationForId() throws IOException {
+        cli = new ZenSoleCli("3", "1", "111");
+
+        String searchResults = cli.collectSearchCriteriaAndReturnSearchResult();
+
+        assertThat(searchResults).contains("Speedbolt");
+    }
+
+
+
+    @Test
+    public void shouldDisplayErrorsInHumanFriendlyWay() {
+
+    }
 }
