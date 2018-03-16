@@ -17,8 +17,8 @@ class ZenSoleCli {
 
     private final Logger log = LoggerFactory.getLogger(ZenSoleCli.class.getCanonicalName());
 
-    static final String WELCOME = "----------------------------------------------------" +
-            "Welcome to ZenSole - The ZenDesk Search Console Tool" +
+    static final String WELCOME = "\n----------------------------------------------------\n" +
+            "Welcome to ZenSole - The ZenDesk Search Console Tool\n" +
             "----------------------------------------------------";
 
     private static final String MENUITEM_EXIT = "EXIT";
@@ -29,6 +29,7 @@ class ZenSoleCli {
     private final SearchController searchController;
     private final ResultRenderer resultRenderer;
     private final Scanner scanner;
+    private final InputStream consoleInputStream;
 
 
 
@@ -51,6 +52,7 @@ class ZenSoleCli {
 
 
     private ZenSoleCli(InputStream consoleInputStream) {
+        this.consoleInputStream = consoleInputStream;
         scanner = new Scanner(consoleInputStream);
         searchController = new SearchController();
         resultRenderer = new ResultRenderer();
@@ -71,6 +73,9 @@ class ZenSoleCli {
             show("ZenSole experienced an internal error. Please try again or contact support. Details: %s", t.toString());
             log.info("Unexpected error: {} ({})", t.toString(), ExceptionUtils.getStackTrace(t));
         }
+        finally {
+            consoleInputStream.close();
+        }
 
         log.debug("Ended processing loop");
     }
@@ -86,7 +91,7 @@ class ZenSoleCli {
 
         String searchResult = runSearch(entityName, fieldName, fieldValue);
 
-        show("%nSearch results for %s with %s=%s: %s",
+        show("%nSearch results for %s with %s='%s': %s",
                 entityName,
                 fieldName,
                 fieldValue,
@@ -119,7 +124,7 @@ class ZenSoleCli {
 
     private String promptForEntityName() {
         return promptMenuAndReturnSelectedValue(
-                "Please select the type of information to search (then press enter):",
+                "Please select the type of information to search in (then press enter):",
                 new String[]{MENUITEM_EXIT, MENUITEM_TICKETS, MENUITEM_USERS, MENUITEM_ORGANIZATIONS});
     }
 

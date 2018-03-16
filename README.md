@@ -7,7 +7,7 @@ Console app as code assignment for Zendesk
 Instructions here are for Linux (and OSX).
 
 ## System Requirements
-Needed to build and run the CLI is the following:
+To build and run the CLI you'll need the following:
 
 * git
 * Java 8 or higher
@@ -20,15 +20,20 @@ cd zensole
 ```
 
 ## Run
+Run the CLI
 ```
-./gradlew test
+./zensole.sh
+```
+Tail the log file
+```
+tail -f zensole.log
 ```
 
 ## Security Check
 The CLI uses a few dependencies, defined in the build.gradle file.
 These dependencies are checked for known vulnerabilities 
 (using OWASP dependency check https://www.owasp.org/index.php/OWASP_Dependency_Check).
-To perform the check, run:
+To perform the check yourself, run:
 ```
 ./gradlew dependencyCheckAnalyze
 ```
@@ -39,8 +44,12 @@ The CVEs are cached for 4 hours, subsequent builds will therefore be faster.
 ## Source Location
 https://github.com/diegowholikesorange/zensole
 
+Main entry point is ```net.tognola.zensole.gui.ZenSoleCli```.
+
 ## CI Location
 https://circleci.com/gh/diegowholikesorange/zensole
+
+CI runs build, tests and dependency check.
 
 # Assumptions
 * IDs of companies, users and tickets in the provided JSON files are unique within their bounded context.

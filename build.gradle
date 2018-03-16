@@ -14,6 +14,12 @@ buildscript {
 
 apply plugin: 'org.owasp.dependencycheck'
 apply plugin: 'java'
+apply plugin: 'application'
+
+mainClassName = "net.tognola.zensole.gui.ZenSoleCli"
+run {
+    standardInput = System.in
+}
 
 sourceCompatibility = 1.8
 
