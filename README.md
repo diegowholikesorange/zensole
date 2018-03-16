@@ -1,18 +1,46 @@
 # ZenSole
 Console app as code assignment for Zendesk
 
-# Source Location
-https://github.com/diegowholikesorange/zensole
 
-# CI Location
-https://circleci.com/gh/diegowholikesorange/zensole
 
 # Build and Run
+Instructions here are for Linux (and OSX).
 
-**Note:** this process will check the binary dependencies for known vulnerabilities 
-(using OWASP dependency check https://www.owasp.org/index.php/OWASP_Dependency_Check). 
-This will trigger a download of known CVEs that may take a few minutes on the first run. 
+## System Requirements
+Needed to build and run the CLI is the following:
+
+* git
+* Java 8 or higher
+
+## Build
+```
+git clone https://github.com/diegowholikesorange/zensole.git
+cd zensole
+./gradlew test
+```
+
+## Run
+```
+./gradlew test
+```
+
+## Security Check
+The CLI uses a few dependencies, defined in the build.gradle file.
+These dependencies are checked for known vulnerabilities 
+(using OWASP dependency check https://www.owasp.org/index.php/OWASP_Dependency_Check).
+To perform the check, run:
+```
+./gradlew dependencyCheckAnalyze
+```
+
+**Note:** This will trigger a download of known CVE definitions that may take a few minutes on the first run. 
 The CVEs are cached for 4 hours, subsequent builds will therefore be faster.
+
+## Source Location
+https://github.com/diegowholikesorange/zensole
+
+## CI Location
+https://circleci.com/gh/diegowholikesorange/zensole
 
 # Assumptions
 * IDs of companies, users and tickets in the provided JSON files are unique within their bounded context.
@@ -51,9 +79,6 @@ The representation of objects as JSONObjects is sufficiently structured for our 
 and provides a higher level of flexibility, e.g. automatic backward compatibility in the case of
 (most) schema changes. 
 
-
- 
-
 # Incremental Delivery of Value
 I implemented the solution in an iterative way, 
 based on the following sequence of features:
@@ -88,6 +113,16 @@ when I search for tickets with empty value for field F
 then I want to see all tickets that have an empty or no value for field F 
 and I want to see all the fields of each ticket.
 
+### As a user I want to be able to search a user or organisations by any field value so that I can browse the Zen data.
+#### Acceptance Criteria
+* Given user/organization exist with value X for field F, where X is not empty,
+when I search for user/organization with value X for field F 
+then I want to see all user/organization that have value X for field F and I want to see all the fields of each user/organization.
+* Given user/organization exist with empty or no value for field F,
+when I search for user/organization with empty value for field F 
+then I want to see all user/organization that have an empty or no value for field F 
+and I want to see all the fields of each user/organization.
+
 ### As a user I want to see the names of organisations and users with their IDs so that I know who the ID represents
 #### Acceptance Criteria
 * Given search criteria exist for tickets and users that return one or more matches 
@@ -110,4 +145,15 @@ the time of the search, the ticket id and the reason why the search failed.
 * Given a search failed because of invalid search criteria (entity, field or field value), 
 when I look at the corresponding log entries, 
 then I want to see a message that tells me which value was incorrect and why.
+* Given an internal, unexpected error happens in the application
+when I open the log file
+then I want to see the Java exception type and stacktrace for the error.
 
+### As a user I want to be able to stop (exit) from the CLI so that I can reuse the console for other tasks.
+#### Acceptance Criteria
+* Given that the CLI prompts me for the entity type to be searched
+when I look at the options
+then I want to see an option to EXIT the CLI.
+* Given that the CLI prompts me for the entity type to be searched
+when I select the menu option EXIT
+then I want the CLI to stop.

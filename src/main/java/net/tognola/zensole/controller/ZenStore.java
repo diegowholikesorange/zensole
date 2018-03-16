@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+@java.lang.SuppressWarnings({"squid:S2629"})
 class ZenStore {
 
     private final Logger log = LoggerFactory.getLogger(ZenStore.class.getCanonicalName());

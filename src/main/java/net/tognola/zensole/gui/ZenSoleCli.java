@@ -67,7 +67,7 @@ class ZenSoleCli {
                     collectSearchCriteriaAndReturnSearchResult()
             )) ;
         }
-        catch (Throwable t) {
+        catch (Exception t) {
             show("ZenSole experienced an internal error. Please try again or contact support. Details: %s", t.toString());
             log.info("Unexpected error: {} ({})", t.toString(), ExceptionUtils.getStackTrace(t));
         }
