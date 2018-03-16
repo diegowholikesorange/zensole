@@ -49,7 +49,8 @@ Main entry point is ```net.tognola.zensole.gui.ZenSoleCli```.
 ### CI Location
 https://circleci.com/gh/diegowholikesorange/zensole
 
-CI runs build, tests and dependency check.
+CI runs build, tests and dependency check. The pipeline is configured
+as code in https://github.com/diegowholikesorange/zensole/blob/master/.circleci/config.yml
 
 ## Assumptions
 * IDs of companies, users and tickets in the provided JSON files are unique within their bounded context.
@@ -98,7 +99,9 @@ until the user request exit from the CLI;
 organizations.json) and performs the search using GSON streams processing
 * **ResultsEnricher** receives the search results from the search controller 
 and enriches them by replacing user_id and organization_id with the names of the related entities.
-* **ResultsRendered** is a helper class converting the enriched result into 
+For this, it internally interacts with the ZenStore to find the related entities via the 
+standard search interface.
+* **ResultsRenderer** is a helper class converting the enriched result into 
 a coloured string representation that the console outputs to the user.
 
 ![Diagram](diagram.jpg)
