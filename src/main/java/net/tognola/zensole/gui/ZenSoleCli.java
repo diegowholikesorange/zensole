@@ -91,10 +91,10 @@ class ZenSoleCli {
 
         String searchResult = runSearch(entityName, fieldName, fieldValue);
 
-        show("%nSearch results for %s with %s='%s': %s",
+        show("%nSearch results for %s that match '%s' in %s: %s",
                 entityName,
-                fieldName,
                 fieldValue,
+                fieldName,
                 searchResult);
 
         return searchResult;
