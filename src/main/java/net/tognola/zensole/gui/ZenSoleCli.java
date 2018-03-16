@@ -11,8 +11,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Scanner;
 
-// exclude SonarLint check for System.out because this is intended here
-@java.lang.SuppressWarnings({"squid:S2629", "squid:S106"})
 class ZenSoleCli {
 
     private final Logger log = LoggerFactory.getLogger(ZenSoleCli.class.getCanonicalName());
@@ -141,7 +139,7 @@ class ZenSoleCli {
                     ResultRenderer.ANSI_RESET);
         }
 
-        int selectedIndex = - 1;
+        int selectedIndex;
         while (true) {
             String userInput = scanner.nextLine().trim();
             if (StringUtils.isNumeric(userInput)) {
@@ -187,6 +185,8 @@ class ZenSoleCli {
 
 
 
+    // exclude SonarLint check for System.out because this is intended here
+    @java.lang.SuppressWarnings({"squid:S2629", "squid:S106"})
     private void show(String s) {
         System.out.println(s);
     }

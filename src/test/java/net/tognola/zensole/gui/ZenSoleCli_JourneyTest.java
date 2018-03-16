@@ -113,9 +113,4 @@ public class ZenSoleCli_JourneyTest {
     }
 
 
-
-    @Test
-    public void shouldDisplayErrorsInHumanFriendlyWay() {
-
-    }
 }
