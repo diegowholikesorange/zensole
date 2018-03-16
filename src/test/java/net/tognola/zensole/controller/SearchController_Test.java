@@ -1,4 +1,4 @@
-package net.tognola.zensole;
+package net.tognola.zensole.controller;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -27,6 +27,7 @@ public class SearchController_Test {
     @Test
     public void listFieldsOfEntityShouldDelegateToZenStore() throws IOException {
         searchController.listFieldsOfEntity(null);
+
         Mockito.verify(zenStoreMock).listFieldsOfEntity(any());
     }
 
@@ -35,6 +36,7 @@ public class SearchController_Test {
     @Test
     public void searchShouldDelegateToZenStore() throws IOException {
         searchController.search("a", null, "b");
+
         Mockito.verify(zenStoreMock).search("a", null, "b");
     }
 
@@ -43,6 +45,7 @@ public class SearchController_Test {
     @Test
     public void searchShouldDelegateToResultEnricher() throws IOException {
         searchController.search("a", null, "b");
+        
         Mockito.verify(enricherMock).enrich(any(), any());
     }
 

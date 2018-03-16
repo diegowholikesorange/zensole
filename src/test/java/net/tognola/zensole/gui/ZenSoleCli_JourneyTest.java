@@ -1,4 +1,4 @@
-package net.tognola.zensole;
+package net.tognola.zensole.gui;
 
 import org.junit.Test;
 
@@ -13,8 +13,10 @@ public class ZenSoleCli_JourneyTest {
 
     @Test
     public void findAllUsersForOrganization() throws IOException {
-        cli = new ZenSoleCli("2", "15", "119", "0");
+        cli = new ZenSoleCli("2", "15", "119");
+
         String searchResults = cli.collectSearchCriteriaAndReturnSearchResult();
+
         assertThat(searchResults).contains("Francisca Rasmussen");
         assertThat(searchResults).contains("Multron (id=119)");
         assertThat(searchResults).contains("Don't Worry Be Happy!");
@@ -24,15 +26,16 @@ public class ZenSoleCli_JourneyTest {
         assertThat(searchResults).contains("Tokelau");
         assertThat(searchResults).contains("Catalina Simpson");
         assertThat(searchResults).contains("rosannasimpson@flotonic.com");
-        cli.collectSearchCriteriaAndReturnSearchResult();
     }
 
 
 
     @Test
     public void findAllTicketsForOrganization() throws IOException {
-        cli = new ZenSoleCli("1", "11", "121", "0");
+        cli = new ZenSoleCli("1", "11", "121");
+
         String searchResults = cli.collectSearchCriteriaAndReturnSearchResult();
+
         assertThat(searchResults).contains("6f2eca87-8425-40f5-b12c-6745039d12f6");
         assertThat(searchResults).contains("ca106ab2-84af-45e7-a101-2d5c63eebf85");
         assertThat(searchResults).contains("9686f505-6bf0-4972-9ba3-9b5c2fe8f725");
@@ -44,28 +47,29 @@ public class ZenSoleCli_JourneyTest {
         assertThat(searchResults).contains("West Virginia");
         assertThat(searchResults).contains("Fédératéd Statés Of Micronésia");
         assertThat(searchResults).contains("A Drama in United Arab Emirates");
-        cli.collectSearchCriteriaAndReturnSearchResult();
     }
 
 
 
     @Test
     public void findAllTicketsWithNoOrganization() throws IOException {
-        cli = new ZenSoleCli("1", "11", "", "0");
+        cli = new ZenSoleCli("1", "11", "");
+
         String searchResults = cli.collectSearchCriteriaAndReturnSearchResult();
+
         assertThat(searchResults).contains("total 4 matches");
         assertThat(searchResults).contains("e68d8bfd-9826-42fd-9692-add445aa7430");
         assertThat(searchResults).contains("4b88dee7-0c17-4fe2-8cb6-914b7ce93dc3");
         assertThat(searchResults).contains("54f60187-6064-492a-9a4c-37fc21b4e300");
         assertThat(searchResults).contains("f2379173-6083-49f9-a001-8310f6478b4e");
-        cli.collectSearchCriteriaAndReturnSearchResult();
     }
 
 
 
     @Test
     public void showAllTicketDetailsWhenTicketExists() throws IOException {
-        cli = new ZenSoleCli("1", "0", "6aac0369-a7e5-4417-8b50-92528ef485d3", "0");
+        cli = new ZenSoleCli("1", "0", "6aac0369-a7e5-4417-8b50-92528ef485d3");
+
         String searchResults = cli.collectSearchCriteriaAndReturnSearchResult();
 
         assertThat(searchResults).contains("6aac0369-a7e5-4417-8b50-92528ef485d3");
@@ -84,16 +88,16 @@ public class ZenSoleCli_JourneyTest {
         assertThat(searchResults).contains("question");
         assertThat(searchResults).contains("http://initech.zendesk.com/api/v2/tickets/6aac0369-a7e5-4417-8b50-92528ef485d3.json");
         assertThat(searchResults).contains("chat");
-        cli.collectSearchCriteriaAndReturnSearchResult();
     }
 
 
 
     @Test
     public void showNoticeWhenNoTicketExists() throws IOException {
-        cli = new ZenSoleCli("1", "0", "555-555", "0");
+        cli = new ZenSoleCli("1", "0", "555-555");
 
         String searchResults = cli.collectSearchCriteriaAndReturnSearchResult();
+
         assertThat(searchResults).contains("No matches found");
     }
 }

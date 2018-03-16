@@ -1,6 +1,5 @@
-package net.tognola.zensole;
+package net.tognola.zensole.controller;
 
-import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -10,6 +9,7 @@ import org.junit.Test;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Run a search against a set of 100,000 records.
@@ -31,10 +31,10 @@ public class ZenStore_PerformanceTest {
         for (int i = 0; i < 100000; i++) {
             largeUserStore.add(template);
         }
+        assertThat(largeUserStore).hasSize(100000);
 
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        String newJsonString = gson.toJson(largeUserStore);
-        largeUserJsonDataStream = new ByteArrayInputStream(newJsonString.getBytes());
+        String jsonString = new GsonBuilder().create().toJson(largeUserStore);
+        largeUserJsonDataStream = new ByteArrayInputStream(jsonString.getBytes());
     }
 
 

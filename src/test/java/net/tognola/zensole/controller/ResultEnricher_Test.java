@@ -1,4 +1,4 @@
-package net.tognola.zensole;
+package net.tognola.zensole.controller;
 
 import com.google.gson.JsonObject;
 import org.junit.Before;
@@ -25,17 +25,26 @@ public class ResultEnricher_Test {
 
     @Test
     public void enrichTicketsShouldReturnFullList() throws IOException {
-        List<JsonObject> result = zenStore.search("tickets", "organization_id", "112");
+        List<JsonObject> result = zenStore.search("tickets",
+                "organization_id",
+                "112");
         int originalSize = result.size();
-        assertThat(enricher.enrich(result, zenStore)).hasSize(originalSize);
+
+        List<JsonObject> enriched = enricher.enrich(result, zenStore);
+
+        assertThat(enriched).hasSize(originalSize);
     }
 
 
 
     @Test
     public void enrichTicketsShouldReplaceOrganizationIdWithDetail() throws IOException {
-        JsonObject result = zenStore.search("test-tickets", "_id", "2217c7dc-7371-4401-8738-0a8a8aedc08d").get(0);
+        JsonObject result = zenStore.search("test-tickets",
+                "_id",
+                "2217c7dc-7371-4401-8738-0a8a8aedc08d").get(0);
+
         JsonObject enriched = enricher.enrichItem(result, zenStore);
+
         assertThat(enriched.get("organization").getAsString()).contains("Xylar (id=104)");
         assertThat(enriched.get("organization")).isNotNull();
         assertThat(enriched.get("organization_id")).isNull();
@@ -45,8 +54,12 @@ public class ResultEnricher_Test {
 
     @Test
     public void enrichTicketsShouldReplaceSubmitterIdWithDetail() throws IOException {
-        JsonObject result = zenStore.search("test-tickets", "_id", "2217c7dc-7371-4401-8738-0a8a8aedc08d").get(0);
+        JsonObject result = zenStore.search("test-tickets",
+                "_id",
+                "2217c7dc-7371-4401-8738-0a8a8aedc08d").get(0);
+
         JsonObject enriched = enricher.enrichItem(result, zenStore);
+
         assertThat(enriched.get("submitter").getAsString()).contains("Josefa Mcfadden (id=9)");
         assertThat(enriched.get("submitter")).isNotNull();
         assertThat(enriched.get("submitter_id")).isNull();
@@ -56,8 +69,12 @@ public class ResultEnricher_Test {
 
     @Test
     public void enrichTicketsShouldReplaceAssigneeIdWithDetail() throws IOException {
-        JsonObject result = zenStore.search("test-tickets", "_id", "2217c7dc-7371-4401-8738-0a8a8aedc08d").get(0);
+        JsonObject result = zenStore.search("test-tickets",
+                "_id",
+                "2217c7dc-7371-4401-8738-0a8a8aedc08d").get(0);
+
         JsonObject enriched = enricher.enrichItem(result, zenStore);
+
         assertThat(enriched.get("assignee").getAsString()).contains("Deanna Terry (id=65)");
         assertThat(enriched.get("assignee")).isNotNull();
         assertThat(enriched.get("assignee_id")).isNull();
@@ -67,9 +84,14 @@ public class ResultEnricher_Test {
 
     @Test
     public void enrichUsersShouldReturnFullList() throws IOException {
-        List<JsonObject> result = zenStore.search("users", "organization_id", "123");
+        List<JsonObject> result = zenStore.search("users",
+                "organization_id",
+                "123");
         int originalSize = result.size();
-        assertThat(enricher.enrich(result, zenStore)).hasSize(originalSize);
+
+        List<JsonObject> enriched = enricher.enrich(result, zenStore);
+
+        assertThat(enriched).hasSize(originalSize);
     }
 
 
@@ -77,10 +99,26 @@ public class ResultEnricher_Test {
     @Test
     public void enrichUsersShouldReplaceOrganizationIdWithDetail() throws IOException {
         JsonObject result = zenStore.search("users", "_id", "65").get(0);
+
         JsonObject enriched = enricher.enrichItem(result, zenStore);
-        assertThat(enriched.get("organization").getAsString()).contains("Terrasys (id=123)");
+
         assertThat(enriched.get("organization")).isNotNull();
         assertThat(enriched.get("organization_id")).isNull();
+    }
+
+
+
+    @Test
+    public void enrichmentShouldNotFailWhenMissingReferences() throws IOException {
+        JsonObject result = zenStore.search("test-tickets", "_id", "555").get(0);
+
+        JsonObject enriched = enricher.replaceIdWithDetails(result,
+                "organization_id",
+                "organization",
+                "organizations", zenStore);
+
+        assertThat(enriched.get("organization")).isNull();
+        assertThat(enriched.get("organization_id")).isNotNull();
     }
 
 }

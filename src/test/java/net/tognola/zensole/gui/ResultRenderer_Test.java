@@ -1,4 +1,4 @@
-package net.tognola.zensole;
+package net.tognola.zensole.gui;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -20,7 +20,7 @@ public class ResultRenderer_Test {
 
     @Before
     public void setup() {
-        final String json = "{\n" +
+        String json = "{\n" +
                 "    \"_id\": \"7382ad0e-dea7-4c8d-b38f-cbbf016f2598\",\n" +
                 "    \"url\": \"http://initech.zendesk.com/api/v2/tickets/7382ad0e-dea7-4c8d-b38f-cbbf016f2598.json\",\n" +
                 "    \"external_id\": \"6d3b0e05-6013-4513-9913-0bb6a0f66ef7\",\n" +
@@ -52,9 +52,9 @@ public class ResultRenderer_Test {
 
     @Test
     public void shouldRenderEachAttributeOnSeparateLine() {
-        final String rendered = renderer.render(fakeResult);
-        System.out.println(rendered);
-        final String[] lines = rendered.split("\n");
+        String rendered = renderer.render(fakeResult);
+
+        String[] lines = rendered.split("\n");
         assertThat(lines.length).isEqualTo(19);
     }
 
@@ -62,11 +62,12 @@ public class ResultRenderer_Test {
 
     @Test
     public void shouldRenderAllKeysAndValues() {
-        final String rendered = renderer.render(fakeResult);
+        String rendered = renderer.render(fakeResult);
+
         assertThat(rendered).isNotEmpty();
-        for (final String key : fakeResult.get(0).keySet()) {
+        for (String key : fakeResult.get(0).keySet()) {
             assertThat(rendered).contains(key);
-            final String valueAsStringWithoutQuotes = fakeResult.get(0).get(key).toString().replace("\"", "");
+            String valueAsStringWithoutQuotes = fakeResult.get(0).get(key).toString().replace("\"", "");
             assertThat(rendered).contains(valueAsStringWithoutQuotes);
         }
     }
@@ -76,7 +77,9 @@ public class ResultRenderer_Test {
     @Test
     public void shouldRenderEmptyResult() {
         fakeResult = new ArrayList<>();
-        final String rendered = renderer.render(fakeResult);
+
+        String rendered = renderer.render(fakeResult);
+        
         assertThat(rendered).isNotEmpty();
         assertThat(rendered).contains("No matches found");
     }

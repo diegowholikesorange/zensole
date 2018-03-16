@@ -1,4 +1,4 @@
-package net.tognola.zensole;
+package net.tognola.zensole.gui;
 
 import org.junit.Test;
 

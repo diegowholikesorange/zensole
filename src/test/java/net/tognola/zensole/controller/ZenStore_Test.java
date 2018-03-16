@@ -1,6 +1,7 @@
-package net.tognola.zensole;
+package net.tognola.zensole.controller;
 
 import com.google.gson.JsonObject;
+import net.tognola.zensole.gui.ResultRenderer;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -79,6 +80,7 @@ public class ZenStore_Test {
     @Test
     public void listFieldsOfEntityForUsersShouldContainAllFields() throws IOException {
         String[] fields = zenStore.listFieldsOfEntity("users");
+
         assertThat(fields).contains("_id");
         assertThat(fields).contains("url");
         assertThat(fields).contains("external_id");
@@ -105,6 +107,7 @@ public class ZenStore_Test {
     @Test
     public void listFieldsOfEntityForTicketsShouldContainAllFields() throws IOException {
         String[] fields = zenStore.listFieldsOfEntity("tickets");
+
         assertThat(fields).contains("_id");
         assertThat(fields).contains("url");
         assertThat(fields).contains("external_id");
@@ -127,7 +130,10 @@ public class ZenStore_Test {
 
     @Test
     public void searchByTicketId_shouldReturnCorrectTicket_whenTicketExists() throws IOException {
-        JsonObject result = zenStore.search("tickets", "_id", "6aac0369-a7e5-4417-8b50-92528ef485d3").get(0);
+        JsonObject result = zenStore.search("tickets",
+                "_id",
+                "6aac0369-a7e5-4417-8b50-92528ef485d3").get(0);
+
         assertThat(result.has("_id")).isTrue();
         assertThat(result.get("_id").getAsString()).isEqualTo("6aac0369-a7e5-4417-8b50-92528ef485d3");
         assertThat(result.get("organization_id").getAsInt()).isEqualTo(113);
@@ -137,7 +143,10 @@ public class ZenStore_Test {
 
     @Test
     public void searchByTicketId_shouldReturnEmpty_whenTicketDoesNotExist() throws IOException {
-        List<JsonObject> result = zenStore.search("tickets", "_id", "555-555");
+        List<JsonObject> result = zenStore.search("tickets",
+                "_id",
+                "555-555");
+
         assertThat(result).isEmpty();
     }
 
@@ -145,7 +154,10 @@ public class ZenStore_Test {
 
     @Test
     public void searchForOptionalFieldShouldSucceed() throws IOException {
-        List<JsonObject> result = zenStore.search("tickets", "organization_id", "112");
+        List<JsonObject> result = zenStore.search("tickets",
+                "organization_id",
+                "112");
+
         assertThat(result).hasSize(5);
     }
 
@@ -153,7 +165,10 @@ public class ZenStore_Test {
 
     @Test
     public void searchTicketByOrganizationId_shouldReturnCorrectTickets() throws IOException {
-        List<JsonObject> result = zenStore.search("tickets", "organization_id", "112");
+        List<JsonObject> result = zenStore.search("tickets",
+                "organization_id",
+                "112");
+
         String renderedContent = new ResultRenderer().render(result);
         assertThat(renderedContent).contains("1a227508-9f39-427c-8f57-1b72f3fab87c");
         assertThat(renderedContent).contains("5507c3f7-27fe-48f1-b01e-46d31715cc62");
@@ -166,7 +181,10 @@ public class ZenStore_Test {
 
     @Test
     public void searchUserByEmail_shouldReturnCorrectUser() throws IOException {
-        List<JsonObject> result = zenStore.search("users", "email", "coffeyrasmussen@flotonic.com");
+        List<JsonObject> result = zenStore.search("users",
+                "email",
+                "coffeyrasmussen@flotonic.com");
+
         assertThat(result).hasSize(1);
         String renderedContent = new ResultRenderer().render(result);
         assertThat(renderedContent).contains("Francisca Rasmussen");
@@ -176,7 +194,10 @@ public class ZenStore_Test {
 
     @Test
     public void searchUserByTags_shouldReturnCorrectUser() throws IOException {
-        List<JsonObject> result = zenStore.search("users", "tags", "Bonanza");
+        List<JsonObject> result = zenStore.search("users",
+                "tags",
+                "Bonanza");
+
         assertThat(result).hasSize(1);
         String renderedContent = new ResultRenderer().render(result);
         assertThat(renderedContent).contains("38899b1e-89ca-43e7-b039-e3c88525f0d2");
@@ -186,7 +207,10 @@ public class ZenStore_Test {
 
     @Test
     public void searchUserBySubstringOfName_shouldReturnCorrectUser() throws IOException {
-        List<JsonObject> result = zenStore.search("users", "name", "Watkins");
+        List<JsonObject> result = zenStore.search("users",
+                "name",
+                "Watkins");
+
         assertThat(result).hasSize(1);
         String renderedContent = new ResultRenderer().render(result);
         assertThat(renderedContent).contains("38899b1e-89ca-43e7-b039-e3c88525f0d2");
@@ -196,7 +220,10 @@ public class ZenStore_Test {
 
     @Test
     public void searchForEmptyOrganizationShouldSucceed() throws IOException {
-        List<JsonObject> result = zenStore.search("tickets", "organization_id", "");
+        List<JsonObject> result = zenStore.search("tickets",
+                "organization_id",
+                "");
+
         assertThat(result).hasSize(4);
     }
 
@@ -204,15 +231,21 @@ public class ZenStore_Test {
 
     @Test
     public void searchForEmptyTagsShouldSucceed() throws IOException {
-        List<JsonObject> result = zenStore.search("test-tickets", "tags", "");
-        assertThat(result).hasSize(2);
+        List<JsonObject> result = zenStore.search("test-tickets",
+                "tags",
+                "");
+
+        assertThat(result).hasSize(3);
     }
 
 
 
     @Test
     public void shouldConvertPrimitiveValueToString() throws IOException {
-        List<JsonObject> tickets = zenStore.search("test-tickets", "_id", "2217c7dc-7371-4401-8738-0a8a8aedc08d");
+        List<JsonObject> tickets = zenStore.search("test-tickets",
+                "_id",
+                "2217c7dc-7371-4401-8738-0a8a8aedc08d");
+
         assertThat(zenStore.convertFieldValueToString(tickets.get(0).get("status"))).isEqualTo("closed");
     }
 
@@ -220,7 +253,10 @@ public class ZenStore_Test {
 
     @Test
     public void shouldConvertEmptyPrimitiveValueToString() throws IOException {
-        List<JsonObject> tickets = zenStore.search("test-tickets", "_id", "436bf9b0-1147-4c0a-8439-6f79833bff5b");
+        List<JsonObject> tickets = zenStore.search("test-tickets",
+                "_id",
+                "436bf9b0-1147-4c0a-8439-6f79833bff5b");
+
         assertThat(zenStore.convertFieldValueToString(tickets.get(0).get("status"))).isEqualTo("");
     }
 
@@ -228,7 +264,10 @@ public class ZenStore_Test {
 
     @Test
     public void shouldConvertMissingPrimitiveValueToString() throws IOException {
-        List<JsonObject> tickets = zenStore.search("test-tickets", "_id", "1a227508-9f39-427c-8f57-1b72f3fab87c");
+        List<JsonObject> tickets = zenStore.search("test-tickets",
+                "_id",
+                "1a227508-9f39-427c-8f57-1b72f3fab87c");
+
         assertThat(zenStore.convertFieldValueToString(tickets.get(0).get("status"))).isEqualTo("");
     }
 
@@ -236,15 +275,22 @@ public class ZenStore_Test {
 
     @Test
     public void shouldConvertArrayValueToString() throws IOException {
-        List<JsonObject> tickets = zenStore.search("test-tickets", "_id", "2217c7dc-7371-4401-8738-0a8a8aedc08d");
-        assertThat(zenStore.convertFieldValueToString(tickets.get(0).get("tags"))).isEqualTo("Massachusetts,New York,Minnesota,New Jersey");
+        List<JsonObject> tickets = zenStore.search("test-tickets",
+                "_id",
+                "2217c7dc-7371-4401-8738-0a8a8aedc08d");
+
+        assertThat(zenStore.convertFieldValueToString(tickets.get(0).get("tags")))
+                .isEqualTo("Massachusetts,New York,Minnesota,New Jersey");
     }
 
 
 
     @Test
     public void shouldConvertEmptyArrayValueToString() throws IOException {
-        List<JsonObject> tickets = zenStore.search("test-tickets", "_id", "436bf9b0-1147-4c0a-8439-6f79833bff5b");
+        List<JsonObject> tickets = zenStore.search("test-tickets",
+                "_id",
+                "436bf9b0-1147-4c0a-8439-6f79833bff5b");
+
         assertThat(zenStore.convertFieldValueToString(tickets.get(0).get("tags"))).isEqualTo("");
     }
 
@@ -252,15 +298,21 @@ public class ZenStore_Test {
 
     @Test
     public void shouldConvertMissingArrayValueToString() throws IOException {
-        List<JsonObject> tickets = zenStore.search("test-tickets", "_id", "1a227508-9f39-427c-8f57-1b72f3fab87c");
+        List<JsonObject> tickets = zenStore.search("test-tickets",
+                "_id",
+                "1a227508-9f39-427c-8f57-1b72f3fab87c");
+
         assertThat(zenStore.convertFieldValueToString(tickets.get(0).get("tags"))).isEqualTo("");
     }
 
 
 
     @Test
-    public void openJsonDataStream_shouldNotFailForUndefinedEntity() {
-        assertThat(zenStore.openJsonDataStream("")).isNull();
-        assertThat(zenStore.openJsonDataStream(null)).isNull();
+    public void openJsonDataStream_shouldThrowErrorIfJsonFileNotFound() {
+        assertThatThrownBy(() -> zenStore.openJsonDataStream(null))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("Could not load null.json from classpath. Is this file bundled with the jar ?");
     }
+
+
 }
