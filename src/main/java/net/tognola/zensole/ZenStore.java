@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,13 +21,37 @@ class ZenStore {
 
     public List<JsonObject> search(String queryEntityName, String queryFieldName, String queryFieldValue) throws IOException {
 
-        log.debug("Searching for {}.{}={}", queryEntityName, queryFieldName, queryFieldValue);
+        log.debug("Searching for {}.{}={}",
+                queryEntityName,
+                queryFieldName,
+                queryFieldValue);
+
         validateSearchInput(queryEntityName, queryFieldName, queryFieldValue);
+
+        List<JsonObject> results = searchInStream(
+                queryFieldName,
+                queryFieldValue,
+                openJsonDataStream(queryEntityName));
+
+        log.debug("Searched for {}.{}={}, result: {}",
+                queryEntityName,
+                "_id",
+                queryFieldValue,
+                results.isEmpty() ? "No match" : results);
+
+        return results;
+    }
+
+
+
+    List<JsonObject> searchInStream(String queryFieldName, String queryFieldValue, InputStream jsonStream) throws IOException {
 
         List<JsonObject> result = new ArrayList<>();
         Gson gson = new Gson();
 
-        try (JsonReader reader = new JsonReader(openJsonReader(queryEntityName))) {
+        try (JsonReader reader = new JsonReader(
+                new InputStreamReader(jsonStream, "UTF-8"))) {
+
             reader.beginArray();
             while (reader.hasNext()) {
 
@@ -42,12 +65,10 @@ class ZenStore {
                 if (queryFieldValue.isEmpty() && ithFieldValueAsString.isEmpty()) {
                     result.add(nthEntity);
                 }
-
             }
             reader.endArray();
         }
 
-        log.debug("Searched for {}.{}={}, result: {}", queryEntityName, "_id", queryFieldValue, result.isEmpty() ? "No match" : result);
         return result;
     }
 
@@ -69,12 +90,15 @@ class ZenStore {
 
 
 
-    private InputStreamReader openJsonReader(String entityName) throws UnsupportedEncodingException {
+    InputStream openJsonDataStream(String entityName) {
+        if (entityName == null || entityName.isEmpty()) {
+            return null;
+        }
         InputStream jsonData = getClass().getResourceAsStream("/" + entityName + ".json");
         if (jsonData == null) {
             throw new IllegalStateException("Could not load " + entityName + ".json from classpath. Is this file bundled with the jar ?");
         }
-        return new InputStreamReader(jsonData, "UTF-8");
+        return jsonData;
     }
 
 
@@ -99,7 +123,7 @@ class ZenStore {
 
         Gson gson = new Gson();
         JsonObject firstEntity = null;
-        try (JsonReader reader = new JsonReader(openJsonReader(entityName))) {
+        try (JsonReader reader = new JsonReader(new InputStreamReader(openJsonDataStream(entityName), "UTF-8"))) {
             reader.beginArray();
             if (reader.hasNext()) {
                 firstEntity = gson.fromJson(reader, JsonObject.class);

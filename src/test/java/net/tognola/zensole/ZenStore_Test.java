@@ -8,6 +8,9 @@ import java.io.IOException;
 import java.util.List;
 import static org.assertj.core.api.Assertions.*;
 
+/**
+ * This suite contains some integration tests (integrating with the JSON-based data store) and some plain unit tests.
+ */
 public class ZenStore_Test {
 
     private ZenStore zenStore;
@@ -251,5 +254,13 @@ public class ZenStore_Test {
     public void shouldConvertMissingArrayValueToString() throws IOException {
         List<JsonObject> tickets = zenStore.search("test-tickets", "_id", "1a227508-9f39-427c-8f57-1b72f3fab87c");
         assertThat(zenStore.convertFieldValueToString(tickets.get(0).get("tags"))).isEqualTo("");
+    }
+
+
+
+    @Test
+    public void openJsonDataStream_shouldNotFailForUndefinedEntity() {
+        assertThat(zenStore.openJsonDataStream("")).isNull();
+        assertThat(zenStore.openJsonDataStream(null)).isNull();
     }
 }
