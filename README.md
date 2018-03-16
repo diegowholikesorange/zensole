@@ -1,9 +1,9 @@
 # ZenSole
-Console app as code assignment for Zendesk
+Console app as code assignment for Zendesk.
 
 
 
-# Build and Run
+## Build and Run
 Instructions here are for Linux (and OSX).
 
 ## System Requirements
@@ -12,14 +12,14 @@ To build and run the CLI you'll need the following:
 * git
 * Java 8 or higher
 
-## Build
+### Build
 ```
 git clone https://github.com/diegowholikesorange/zensole.git
 cd zensole
 ./gradlew test
 ```
 
-## Run
+### Run
 Run the CLI
 ```
 ./zensole.sh
@@ -29,7 +29,7 @@ Tail the log file
 tail -f zensole.log
 ```
 
-## Security Check
+### Security Check
 The CLI uses a few dependencies, defined in the build.gradle file.
 These dependencies are checked for known vulnerabilities 
 (using OWASP dependency check https://www.owasp.org/index.php/OWASP_Dependency_Check).
@@ -41,17 +41,17 @@ To perform the check yourself, run:
 **Note:** This will trigger a download of known CVE definitions that may take a few minutes on the first run. 
 The CVEs are cached for 4 hours, subsequent builds will therefore be faster.
 
-## Source Location
+### Source Location
 https://github.com/diegowholikesorange/zensole
 
 Main entry point is ```net.tognola.zensole.gui.ZenSoleCli```.
 
-## CI Location
+### CI Location
 https://circleci.com/gh/diegowholikesorange/zensole
 
 CI runs build, tests and dependency check.
 
-# Assumptions
+## Assumptions
 * IDs of companies, users and tickets in the provided JSON files are unique within their bounded context.
 * Schema changes are likely to occur in the future
 * A change of the data representation away from JSON strings to another form (XML strings, DTOs) is 
@@ -60,7 +60,7 @@ not likely (but the design should still support this)
 * Only some values from related entities need to be included in the search results. 
 These are the name of the entity referred to (organization name and user name).
 
-# Design Decisions
+## Design Decisions
 Based on above assumptions, I decided on and followed the below principles:
 * **Generic filtering by search field.** The filtering of data by field should not 
 have long if statements checking the field name specified in the search query against
@@ -88,7 +88,10 @@ The representation of objects as JSONObjects is sufficiently structured for our 
 and provides a higher level of flexibility, e.g. automatic backward compatibility in the case of
 (most) schema changes. 
 
-# Incremental Delivery of Value
+### Diagram
+![Diagram](diagram.jpg)
+
+## Incremental Delivery of Value
 I implemented the solution in an iterative way, 
 based on the following sequence of features:
 
@@ -102,7 +105,7 @@ based on the following sequence of features:
 I started with the ticket because I assumed that there would be the highest value
 in finding tickets, more than finding organisations or users.
 
-# User Stories
+## User Stories
 ### As a user I want to be able to search a ticket by its id so that I can see all details of the ticket.
 #### Acceptance Criteria
 * Given a ticket with id NNN exists, 
