@@ -16,6 +16,7 @@ public class ZenSoleCli_JourneyTest {
         cli = new ZenSoleCli("2", "15", "119", "0");
         String searchResults = cli.collectSearchCriteriaAndReturnSearchResult();
         assertThat(searchResults).contains("Francisca Rasmussen");
+        assertThat(searchResults).contains("Multron (id=119)");
         assertThat(searchResults).contains("Don't Worry Be Happy!");
         assertThat(searchResults).contains("Pitts Park");
         assertThat(searchResults).contains("9974-742-963");
@@ -36,6 +37,8 @@ public class ZenSoleCli_JourneyTest {
         assertThat(searchResults).contains("ca106ab2-84af-45e7-a101-2d5c63eebf85");
         assertThat(searchResults).contains("9686f505-6bf0-4972-9ba3-9b5c2fe8f725");
         assertThat(searchResults).contains("A Drama in United Arab Emirates");
+        assertThat(searchResults).contains("Jaime Dickerson (id=33)");
+        assertThat(searchResults).contains("Francis Rodrigüez (id=19)");
         assertThat(searchResults).contains("tickets/c527e065-ec62-40ed-aa72-136f5ab0eb89.json");
         assertThat(searchResults).contains("Consequat sit sint velit anim laboris adipisicing");
         assertThat(searchResults).contains("West Virginia");

@@ -62,8 +62,8 @@ based on the following sequence of features:
 1. Search by any field of ticket 
 1. Search by any field of user (without the name of the user's organisation included in the result) 
 1. Search by any field of organisation
-1. Search by any field of user, with name of organisation included in the result
 1. Search by any field of ticket, with name of submitter, assignee and organisation included.  
+1. Search by any field of user, with name of organisation included in the result
 
 I started with the ticket because I assumed that there would be the highest value
 in finding tickets, more than finding organisations or users.
