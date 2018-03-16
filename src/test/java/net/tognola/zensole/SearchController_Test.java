@@ -11,15 +11,15 @@ public class SearchController_Test {
 
     private SearchController searchController;
     private ZenStore zenStoreMock;
-    private ResultRenderer rendererMock;
+    private ResultEnricher enricherMock;
 
 
 
     @Before
     public void setUp() {
         zenStoreMock = Mockito.mock(ZenStore.class);
-        rendererMock = Mockito.mock(ResultRenderer.class);
-        searchController = new SearchController(zenStoreMock);
+        enricherMock = Mockito.mock(ResultEnricher.class);
+        searchController = new SearchController(zenStoreMock, enricherMock);
     }
 
 
@@ -38,5 +38,12 @@ public class SearchController_Test {
         Mockito.verify(zenStoreMock).search("a", null, "b");
     }
 
+
+
+    @Test
+    public void searchShouldDelegateToResultEnricher() throws IOException {
+        searchController.search("a", null, "b");
+        Mockito.verify(enricherMock).enrich(any(), any());
+    }
 
 }

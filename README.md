@@ -20,6 +20,8 @@ The CVEs are cached for 4 hours, subsequent builds will therefore be faster.
 * A change of the data representation away from JSON strings to another form (XML strings, DTOs) is 
 not likely (but the design should still support this)  
 * It's ok to match by substring instead of full value too (e.g "mar" will return "mary")
+* Only some values from related entities need to be included in the search results. 
+These are the name of the entity referred to (organization name and user name).
 
 # Design Decisions
 Based on above assumptions, I decided on and followed the below principles:

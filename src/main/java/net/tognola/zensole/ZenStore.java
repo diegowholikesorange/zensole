@@ -32,15 +32,15 @@ class ZenStore {
             reader.beginArray();
             while (reader.hasNext()) {
 
-                JsonObject ithEntity = gson.fromJson(reader, JsonObject.class);
-                String ithFieldValueAsString = convertFieldValueToString(ithEntity.get(queryFieldName));
+                JsonObject nthEntity = gson.fromJson(reader, JsonObject.class);
+                String ithFieldValueAsString = convertFieldValueToString(nthEntity.get(queryFieldName));
 
                 if (! queryFieldValue.isEmpty() && ithFieldValueAsString.contains(queryFieldValue)) {
-                    result.add(ithEntity);
+                    result.add(nthEntity);
                 }
 
                 if (queryFieldValue.isEmpty() && ithFieldValueAsString.isEmpty()) {
-                    result.add(ithEntity);
+                    result.add(nthEntity);
                 }
 
             }
@@ -69,7 +69,7 @@ class ZenStore {
 
 
 
-    InputStreamReader openJsonReader(String entityName) throws UnsupportedEncodingException {
+    private InputStreamReader openJsonReader(String entityName) throws UnsupportedEncodingException {
         InputStream jsonData = getClass().getResourceAsStream("/" + entityName + ".json");
         if (jsonData == null) {
             throw new IllegalStateException("Could not load " + entityName + ".json from classpath. Is this file bundled with the jar ?");
@@ -119,4 +119,6 @@ class ZenStore {
             throw new IllegalArgumentException("Entity name must not be null or empty");
         }
     }
+
+
 }

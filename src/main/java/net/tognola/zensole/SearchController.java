@@ -8,17 +8,20 @@ import java.util.List;
 class SearchController {
 
     private final ZenStore zenStore;
+    private final ResultEnricher enricher;
 
 
 
-    public SearchController(ZenStore zenStore) {
+    public SearchController(ZenStore zenStore, ResultEnricher enricher) {
         this.zenStore = zenStore;
+        this.enricher = enricher;
     }
 
 
 
     public List<JsonObject> search(String entityName, String fieldName, String fieldValue) throws IOException {
-        return zenStore.search(entityName, fieldName, fieldValue);
+        List<JsonObject> searchResults = zenStore.search(entityName, fieldName, fieldValue);
+        return enricher.enrich(searchResults, zenStore);
     }
 
 

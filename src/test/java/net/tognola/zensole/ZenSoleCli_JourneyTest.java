@@ -66,17 +66,17 @@ public class ZenSoleCli_JourneyTest {
         String searchResults = cli.collectSearchCriteriaAndReturnSearchResult();
 
         assertThat(searchResults).contains("6aac0369-a7e5-4417-8b50-92528ef485d3");
-        assertThat(searchResults).contains("29");
+        assertThat(searchResults).contains("Herrera Norman (id=29)");
         assertThat(searchResults).contains("2016-06-15T12:03:55 -10:00");
         assertThat(searchResults).contains("Laboris laborum culpa sit culpa minim ad laborum Lorem laboris aliqua tempor. ");
         assertThat(searchResults).contains("2016-08-16T05:52:08 -10:00");
         assertThat(searchResults).contains("0c2ba6c6-ea9a-4a58-ada4-bc72f3b9ff39");
         assertThat(searchResults).contains("false");
-        assertThat(searchResults).contains("113");
+        assertThat(searchResults).contains("Noralex (id=113)");
         assertThat(searchResults).contains("urgent");
         assertThat(searchResults).contains("hold");
         assertThat(searchResults).contains("A Nuisance in Latvia");
-        assertThat(searchResults).contains("50");
+        assertThat(searchResults).contains("Daniel Agüilar (id=50)");
         assertThat(searchResults).contains("Washington,Wyoming,Ohio,Pennsylvania");
         assertThat(searchResults).contains("question");
         assertThat(searchResults).contains("http://initech.zendesk.com/api/v2/tickets/6aac0369-a7e5-4417-8b50-92528ef485d3.json");
