@@ -6,7 +6,7 @@ Console app as code assignment for Zendesk.
 ## Build and Run
 Instructions here are for Linux (and OSX).
 
-## System Requirements
+### System Requirements
 To build and run the CLI you'll need the following:
 
 * git
@@ -89,6 +89,18 @@ and provides a higher level of flexibility, e.g. automatic backward compatibilit
 (most) schema changes. 
 
 ### Diagram
+Below is a high-level view of the main processing flow. 
+Names correspond to class names in the source code.
+* **ZenSoleCLI** runs an infinite loop receiving and processing user input, 
+until the user request exit from the CLI;
+* **SearchController** is a thin facade to the search and enrichment process;
+* **ZenStore interacts with the JSON files (tickets.json, users.json, 
+organizations.json) and performs the search using GSON streams processing
+* **ResultsEnricher** receives the search results from the search controller 
+and enriches them by replacing user_id and organization_id with the names of the related entities.
+* **ResultsRendered** is a helper class converting the enriched result into 
+a coloured string representation that the console outputs to the user.
+
 ![Diagram](diagram.jpg)
 
 ## Incremental Delivery of Value
