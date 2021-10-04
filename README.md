@@ -1,5 +1,5 @@
 # ZenSole
-Console app as code assignment for Zendesk.
+Console app as code assignment.
 
 
 
